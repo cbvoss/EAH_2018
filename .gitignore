@@ -1,0 +1,11 @@
+#build directories
+/Debug
+/HardwareDebug
+/Release
+
+#files being edited
+*~
+
+#keep in mind to add more eclipse and device related or generated files (not figured out all yet)
+.info
+makefile.init

@@ -1,0 +1,1 @@
+EventMapTest.exe > output.txt

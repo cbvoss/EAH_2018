@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="com.renesas.cdt.launch.debug.launchConfigurationType">
+<stringAttribute key="org.eclipse.cdt.launch.PROGRAM_NAME" value="Release\MCURally.x"/>
+<stringAttribute key="org.eclipse.cdt.launch.PROJECT_ATTR" value="MCURally"/>
+<stringAttribute key="org.eclipse.cdt.launch.PROJECT_BUILD_CONFIG_ID_ATTR" value="com.renesas.cdt.rxc.debug.win32.configuration.Id.1778569691"/>
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
+<listEntry value="/MCURally"/>
+</listAttribute>
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
+<listEntry value="4"/>
+</listAttribute>
+</launchConfiguration>

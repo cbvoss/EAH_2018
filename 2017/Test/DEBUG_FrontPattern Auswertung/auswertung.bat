@@ -1,0 +1,1 @@
+IrDumpConverter.exe input.txt

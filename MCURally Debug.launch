@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="com.renesas.cdt.launch.dsf.simulator.launchConfigurationType">
+<stringAttribute key="com.renesas.cdt.core.additionalServerArgs" value=""/>
+<intAttribute key="com.renesas.cdt.core.admPortNumber" value="61236"/>
+<stringAttribute key="com.renesas.cdt.core.initCommands" value=""/>
+<stringAttribute key="com.renesas.cdt.core.ipAddress" value="localhost"/>
+<stringAttribute key="com.renesas.cdt.core.jtagDevice" value="RX Simulator"/>
+<stringAttribute key="com.renesas.cdt.core.jtagDeviceId" value="com.renesas.hardwaredebug.simulator.rx"/>
+<listAttribute key="com.renesas.cdt.core.listGDBExe">
+<listEntry value="${eclipse_home}../DebugComp/rx-elf-gdb --rx-force-64bit-double"/>
+</listAttribute>
+<listAttribute key="com.renesas.cdt.core.listGDBLaunchName">
+<listEntry value="main"/>
+</listAttribute>
+<listAttribute key="com.renesas.cdt.core.listGDBPort">
+<listEntry value="61234"/>
+</listAttribute>
+<booleanAttribute key="com.renesas.cdt.core.loadImage" value="true"/>
+<stringAttribute key="com.renesas.cdt.core.optionInitCommands" value=""/>
+<intAttribute key="com.renesas.cdt.core.portNumber" value="61234"/>
+<stringAttribute key="com.renesas.cdt.core.runCommands" value=""/>
+<stringAttribute key="com.renesas.cdt.core.secondGDBExe" value="${eclipse_home}../DebugComp/green_dsp-elf-gdb"/>
+<booleanAttribute key="com.renesas.cdt.core.secondGDBSupport" value="false"/>
+<intAttribute key="com.renesas.cdt.core.secondGdbPortNumber" value="61237"/>
+<stringAttribute key="com.renesas.cdt.core.serverParam" value="-g SIMULATOR  -t R5F562GA  -p 61234 -d 61236 -uPeripheralClkRatio= 1 -uCpuClkFreq= 12 -uRegisterSetting= 0 -uModePin= 0 -uCacheDecode= 1 -n 1 -uWorkRamAddress= 0 -uTraceCapture= 1 -uEmStopInt= 1 -uEmStopInterrupt= 1 -uEmStopFPexp= 1"/>
+<booleanAttribute key="com.renesas.cdt.core.setResume" value="true"/>
+<booleanAttribute key="com.renesas.cdt.core.setStopAt" value="true"/>
+<booleanAttribute key="com.renesas.cdt.core.startServer" value="true"/>
+<stringAttribute key="com.renesas.cdt.core.stopAt" value="main"/>
+<stringAttribute key="com.renesas.cdt.core.targetDevice" value="R5F562GA"/>
+<booleanAttribute key="com.renesas.cdt.core.useRemoteTarget" value="true"/>
+<booleanAttribute key="com.renesas.cdt.core.verboseMode" value="false"/>
+<stringAttribute key="com.renesas.cdt.debug.ioview.dsf.registerSelection" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;selectedRegisterList ioFilePath=&quot;C:\Renesas\e2studio_5.3\internal\IoFiles\RX\RX62G.sfrx&quot;/&gt;&#13;&#10;"/>
+<stringAttribute key="com.renesas.cdt.launch.dsf.IO_MAP" value="${eclipse_home}..\internal\IoFiles\RX\RX62G.sfrx"/>
+<booleanAttribute key="com.renesas.cdt.launch.dsf.USE_DEFAULT_IO_MAP" value="true"/>
+<listAttribute key="com.renesas.cdt.launch.dsf.downloadImages">
+<listEntry value="|true|true|true||true|No core"/>
+</listAttribute>
+<booleanAttribute key="com.renesas.cdt.launch.dsf.downloadImagesUpgradedV30" value="true"/>
+<stringAttribute key="com.renesas.cdt.launch.dsf.launchSeqType" value="com.renesas.cdt.launch.dsf.launchSequence.e2GdbServer"/>
+<stringAttribute key="com.renesas.cdt.launch.dsf.serverPath" value="${eclipse_home}../DebugComp/e2-server-gdb"/>
+<booleanAttribute key="com.renesas.hardwaredebug.e1.le" value="true"/>
+<booleanAttribute key="com.renesas.hardwaredebug.simulator.rx.cacheDecode" value="true"/>
+<stringAttribute key="com.renesas.hardwaredebug.simulator.rx.cpu" value="12"/>
+<stringAttribute key="com.renesas.hardwaredebug.simulator.rx.ioModules" value=""/>
+<booleanAttribute key="com.renesas.hardwaredebug.simulator.rx.le" value="false"/>
+<stringAttribute key="com.renesas.hardwaredebug.simulator.rx.mode" value="0"/>
+<stringAttribute key="com.renesas.hardwaredebug.simulator.rx.mode_pin" value="0"/>
+<intAttribute key="com.renesas.hardwaredebug.simulator.rx.peripheralClkRatio" value="0"/>
+<listAttribute key="com.renesas.hardwaredebug.simulator.rx.sim.memory_areas"/>
+<booleanAttribute key="com.renesas.hardwaredebug.simulator.rx.stop_fp_except" value="true"/>
+<booleanAttribute key="com.renesas.hardwaredebug.simulator.rx.stop_int" value="true"/>
+<booleanAttribute key="com.renesas.hardwaredebug.simulator.rx.stop_interrupt" value="true"/>
+<booleanAttribute key="com.renesas.hardwaredebug.simulator.rx.traceCapture" value="true"/>
+<intAttribute key="com.renesas.hardwaredebug.simulator.rx.work_ram_start" value="0"/>
+<intAttribute key="org.eclipse.cdt.debug.gdbjtag.core.delay" value="3"/>
+<booleanAttribute key="org.eclipse.cdt.debug.gdbjtag.core.doHalt" value="false"/>
+<booleanAttribute key="org.eclipse.cdt.debug.gdbjtag.core.doReset" value="false"/>
+<stringAttribute key="org.eclipse.cdt.debug.gdbjtag.core.imageFileName" value="C:\Users\Tobias Hupel\Documents\Projects\MCU_Rally_2018\Debug\MCURally.x"/>
+<stringAttribute key="org.eclipse.cdt.debug.gdbjtag.core.imageOffset" value=""/>
+<stringAttribute key="org.eclipse.cdt.debug.gdbjtag.core.initCommands" value=""/>
+<booleanAttribute key="org.eclipse.cdt.debug.gdbjtag.core.loadImage" value="true"/>
+<booleanAttribute key="org.eclipse.cdt.debug.gdbjtag.core.loadSymbols" value="true"/>
+<stringAttribute key="org.eclipse.cdt.debug.gdbjtag.core.pcRegister" value=""/>
+<stringAttribute key="org.eclipse.cdt.debug.gdbjtag.core.runCommands" value=""/>
+<booleanAttribute key="org.eclipse.cdt.debug.gdbjtag.core.setPcRegister" value="false"/>
+<booleanAttribute key="org.eclipse.cdt.debug.gdbjtag.core.setResume" value="false"/>
+<booleanAttribute key="org.eclipse.cdt.debug.gdbjtag.core.setStopAt" value="true"/>
+<stringAttribute key="org.eclipse.cdt.debug.gdbjtag.core.stopAt" value="main"/>
+<stringAttribute key="org.eclipse.cdt.debug.gdbjtag.core.symbolsFileName" value="C:\Users\Tobias Hupel\Documents\Projects\MCU_Rally_2018\Debug\MCURally.x"/>
+<stringAttribute key="org.eclipse.cdt.debug.gdbjtag.core.symbolsOffset" value=""/>
+<booleanAttribute key="org.eclipse.cdt.debug.gdbjtag.core.useFileForImage" value="false"/>
+<booleanAttribute key="org.eclipse.cdt.debug.gdbjtag.core.useFileForSymbols" value="false"/>
+<booleanAttribute key="org.eclipse.cdt.debug.gdbjtag.core.useProjBinaryForImage" value="true"/>
+<booleanAttribute key="org.eclipse.cdt.debug.gdbjtag.core.useProjBinaryForSymbols" value="true"/>
+<stringAttribute key="org.eclipse.cdt.dsf.gdb.DEBUG_NAME" value="${eclipse_home}../DebugComp/rx-elf-gdb --rx-force-64bit-double"/>
+<booleanAttribute key="org.eclipse.cdt.dsf.gdb.NON_STOP" value="true"/>
+<intAttribute key="org.eclipse.cdt.launch.ATTR_BUILD_BEFORE_LAUNCH_ATTR" value="1"/>
+<stringAttribute key="org.eclipse.cdt.launch.DEBUGGER_REGISTER_GROUPS" value=""/>
+<booleanAttribute key="org.eclipse.cdt.launch.DEBUGGER_STOP_AT_MAIN" value="true"/>
+<stringAttribute key="org.eclipse.cdt.launch.DEBUGGER_STOP_AT_MAIN_SYMBOL" value="main"/>
+<stringAttribute key="org.eclipse.cdt.launch.PROGRAM_NAME" value="Debug\MCURally.x"/>
+<stringAttribute key="org.eclipse.cdt.launch.PROJECT_ATTR" value="MCURally"/>
+<booleanAttribute key="org.eclipse.cdt.launch.PROJECT_BUILD_CONFIG_AUTO_ATTR" value="false"/>
+<stringAttribute key="org.eclipse.cdt.launch.PROJECT_BUILD_CONFIG_ID_ATTR" value="com.renesas.cdt.rxc.debug.win32.configuration.Id.1778569691"/>
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
+<listEntry value="/MCURally"/>
+</listAttribute>
+<listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
+<listEntry value="4"/>
+</listAttribute>
+<booleanAttribute key="org.eclipse.debug.ui.ATTR_LAUNCH_IN_BACKGROUND" value="false"/>
+<stringAttribute key="org.eclipse.dsf.launch.MEMORY_BLOCKS" value="&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot; standalone=&quot;no&quot;?&gt;&#13;&#10;&lt;memoryBlockExpressionList context=&quot;reserved-for-future-use&quot;&gt;&#13;&#10;&lt;gdbmemoryBlockExpression address=&quot;9056&quot; core_thread_id=&quot;1_i1&quot; label=&quot;0x2360&quot;&gt;&#13;&#10;&lt;memoryRendering id=&quot;org.eclipse.debug.ui.rendering.hexint&quot;&gt;&#13;&#10;&lt;renderingInstance containerId=&quot;org.eclipse.debug.ui.MemoryView.RenderingViewPane.2&quot; viewId=&quot;org.eclipse.debug.ui.MemoryView&quot; viewSecondaryId=&quot;&quot;/&gt;&#13;&#10;&lt;renderingInstance containerId=&quot;org.eclipse.debug.ui.MemoryView.RenderingViewPane.1&quot; viewId=&quot;org.eclipse.debug.ui.MemoryView&quot; viewSecondaryId=&quot;&quot;/&gt;&#13;&#10;&lt;/memoryRendering&gt;&#13;&#10;&lt;/gdbmemoryBlockExpression&gt;&#13;&#10;&lt;/memoryBlockExpressionList&gt;&#13;&#10;"/>
+<stringAttribute key="process_factory_id" value="org.eclipse.cdt.dsf.gdb.GdbProcessFactory"/>
+</launchConfiguration>
