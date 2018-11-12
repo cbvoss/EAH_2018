@@ -19,4 +19,6 @@ click finish
 
 -delete generated MCURally.c <-- thats the main.c file that would be conflicting
 
+-import downloaded project through filesystem
+
 -build the project
