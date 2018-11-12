@@ -2,6 +2,12 @@
 /Debug
 /HardwareDebug
 /Release
+/2017
+/Datasheets
+/Documentation
+/Measurement_Concepts
+/Platinen
+/Regularien
 
 #files being edited
 *~
@@ -9,3 +15,10 @@
 #keep in mind to add more eclipse and device related or generated files (not figured out all yet)
 .info
 makefile.init
+.project
+.Releaselinker
+custom.bat
+MCURally Debug.launch
+MCURally Release.launch
+Readme.md
+.cproject

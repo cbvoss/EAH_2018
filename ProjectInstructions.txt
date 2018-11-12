@@ -1,0 +1,22 @@
+In e2 Studio:
+
+-create a new C Project
+-Project Name: MCURally
+-Project Type ->Executable Renesas -> Sample Project
+-Toolchains RXC Toolchain
+
+click next
+
+-select correct target 
+-untick hardware debug
+
+click next until standard header files dialog
+
+-select C(C99)
+-tick math.h and mathf.h
+
+click finish
+
+-delete generated MCURally.c <-- thats the main.c file that would be conflicting
+
+-build the project
