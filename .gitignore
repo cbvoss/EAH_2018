@@ -8,7 +8,7 @@
 /Measurement_Concepts
 /Platinen
 /Regularien
-
+/.settings
 #files being edited
 *~
 
@@ -17,8 +17,11 @@
 makefile.init
 .project
 .Releaselinker
+.Debuglinker
+EAH_2018 Debug.launch
 custom.bat
 MCURally Debug.launch
 MCURally Release.launch
 Readme.md
 .cproject
+

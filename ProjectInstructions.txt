@@ -1,5 +1,9 @@
 In e2 Studio:
 
+clone Project from github as MCURally
+close gitkraken
+cut out that directory into another folder
+
 -create a new C Project
 -Project Name: MCURally
 -Project Type ->Executable Renesas -> Sample Project
@@ -19,6 +23,6 @@ click finish
 
 -delete generated MCURally.c <-- thats the main.c file that would be conflicting
 
--import downloaded project through filesystem
+replace the project folder with the downloaded project
 
 -build the project
