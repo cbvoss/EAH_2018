@@ -11,7 +11,8 @@ cut out that directory into another folder
 
 click next
 
--select correct target 
+-select correct target
+    -RX600 -> RX62G -> RX62G 100Pin -> R5F562GAAxFP
 -untick hardware debug
 
 click next until standard header files dialog
