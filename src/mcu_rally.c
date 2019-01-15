@@ -11,10 +11,8 @@
 #include "controller_square.h"
 #include "serial_com.h"
 #include "engine.h"
-#include "hall.h"
 #include "servo.h"
 #include "ted.h"
-#include "hall.h"
 #include "controller_hold_line.h"
 #include "adc.h"
 #include "serial_blue.h"
@@ -29,6 +27,8 @@
 #include "global_line_buffer.h"
 #include "fuzzy.h"
 #include "debug_routines.h"
+#include "opto_interruptor.h"
+#include "opto_interruptor.h"
 #include "spi.h"
 #include "TEDnew.h"
 
@@ -106,7 +106,7 @@ void initialize_modules()
     ir_initialize ();
     serial_com_initialize ();
     engine_initialize ();
-    hall_initialize ();
+    opto_initialize ();
     servo_initialize ();
     servo_set_borders (SERVO_LEFT, SERVO_CENTER, SERVO_RIGHT);
     drive_initialize ();

@@ -13,7 +13,7 @@
 #include "tachometer.h"
 #include <stdio.h>
 #include "engine.h"
-#include "hall.h"
+#include "opto_interruptor.h"
 
 void debug_drive_regulator(char startSign, int time1, int time2, int stoptime, int inTime,
 		float initialV_mps, float secondV_mps, float thirdV_mps, char ubreak, float threshold)
@@ -83,8 +83,8 @@ void debug_ticks()
 {
 	static unsigned int r = 0, l = 0;
 
-	unsigned int cr = hall_get_tick_count(BACK_RIGHT);
-	unsigned int cl = hall_get_tick_count(BACK_LEFT);
+	unsigned int cr = opto_get_tick_count(BACK_RIGHT);
+	unsigned int cl = opto_get_tick_count(BACK_LEFT);
 
 	if (cr != r || cl != l)
 	{

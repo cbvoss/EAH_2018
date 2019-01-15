@@ -198,19 +198,19 @@ void Excep_MTU3_TGIA3(void){ }
 void Excep_MTU3_TGIB3(void){ }
 
 // MTU3 TGIC3
-//void Excep_MTU3_TGIC3(void){ }
+void Excep_MTU3_TGIC3(void){ }
 
 // MTU3 TGID3
 void Excep_MTU3_TGID3(void){ }
 
 // MTU3 TCIV3
-//void Excep_MTU3_TCIV3(void){ }
+void Excep_MTU3_TCIV3(void){ }
 
 // MTU4 TGIA4
 void Excep_MTU4_TGIA4(void){ }
 
 // MTU4 TGIB4
-//void Excep_MTU4_TGIB4(void){ }
+void Excep_MTU4_TGIB4(void){ }
 
 // MTU4 TGIC4
 void Excep_MTU4_TGIC4(void){ }
@@ -219,7 +219,7 @@ void Excep_MTU4_TGIC4(void){ }
 void Excep_MTU4_TGID4(void){ }
 
 // MTU4 TCIV4
-//void Excep_MTU4_TCIV4(void){ }
+void Excep_MTU4_TCIV4(void){ }
 
 // MTU5 TGIU5
 void Excep_MTU5_TGIU5(void){ }
@@ -249,7 +249,7 @@ void Excep_MTU6_TGID6(void){ }
 void Excep_MTU7_TGIA7(void){ }
 
 // MTU7 TGIB7
-//void Excep_MTU7_TGIB7(void){ }
+void Excep_MTU7_TGIB7(void){ }
 
 // MTU7 TGIC7
 void Excep_MTU7_TGIC7(void){ }
@@ -258,7 +258,7 @@ void Excep_MTU7_TGIC7(void){ }
 void Excep_MTU7_TGID7(void){ }
 
 // MTU7 TCIV7
-//void Excep_MTU7_TCIV7(void){ }
+void Excep_MTU7_TCIV7(void){ }
 
 // POE OEI1
 void Excep_POE_OEI1(void){ }

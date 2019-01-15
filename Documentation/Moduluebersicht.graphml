@@ -100,7 +100,7 @@
               <y:Geometry height="96.37646484375" width="336.65912810055215" x="121.84828773374113" y="280.47989908854174"/>
               <y:Fill color="#FFCC00" transparent="false"/>
               <y:BorderStyle color="#000000" type="line" width="1.0"/>
-              <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="27.841796875" x="154.40866561277608" y="3.0">Hall<y:LabelModel>
+              <y:NodeLabel alignment="center" autoSizePolicy="content" fontFamily="Dialog" fontSize="13" fontStyle="bold" hasBackgroundColor="false" hasLineColor="false" height="19.92626953125" horizontalTextPosition="center" iconTextGap="4" modelName="custom" textColor="#000000" verticalTextPosition="bottom" visible="true" width="27.841796875" x="154.40866561277608" y="3.0">Opto<y:LabelModel>
                   <y:SmartNodeLabelModel distance="4.0"/>
                 </y:LabelModel>
                 <y:ModelParameter>
@@ -109,9 +109,9 @@
               </y:NodeLabel>
               <y:UML clipContent="true" constraint="" omitDetails="false" stereotype="" use3DEffect="true">
                 <y:AttributeLabel/>
-                <y:MethodLabel>+hall_get_tick_count(SELECTOR): uint
-+hall_get_counts_per_tick(SELECTOR): uint
-+hall_get_counter_prescaler(): uint</y:MethodLabel>
+                <y:MethodLabel>+opto_get_tick_count(SELECTOR): uint
++opto_get_counts_per_tick(SELECTOR): uint
++opto_get_counter_prescaler(): uint</y:MethodLabel>
               </y:UML>
             </y:UMLClassNode>
           </data>

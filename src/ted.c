@@ -10,7 +10,6 @@
  */
 #include "config_car.h"
 #include "Ir_Board.h"
-#include "hall.h"
 #include "ted.h"
 #include "distance_alarm.h"
 #include "tachometer.h"
@@ -19,6 +18,7 @@
 #include "servo.h"
 #include <math.h>
 #include <stdio.h>
+#include "opto_interruptor.h"
 
 /*
  * Effects of the different defines:
