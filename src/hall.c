@@ -218,61 +218,7 @@ void hall_initialize(void) {
 	}
 }
 
-/**
- * Interrupt input capture -> MTU3
- * MTIOC3B P71 CN3
- */
-void Excep_MTU3_TGIC3(void)
-{
-	struct HallWheel* wheel = &g_wheels[BACK_LEFT];
 
-	wheel->counts_per_tick[wheel->cpt_index] = (wheel->ovf_count << 16) + MTU3.TGRC;
-	wheel->tick_count++;
-	wheel->ovf_count = 0;
-
-	wheel->cpt_index = RINGBUFFER_INDEX(HALL_COUNTS_PER_TICK_BUFFER_SIZE, wheel->cpt_index + 1);
-
-	// Handle Status Registers
-	MTU3.TSR.BIT.TGFC = 0;
-
-	if (MTU3.TSR.BIT.TGFC)
-		ICU.IR[131].BIT.IR = 1;
-}
-
-/**
- * Interrupt MTU3 Overflow
- */
-void Excep_MTU3_TCIV3(void)
-{
-	g_wheels[BACK_LEFT].ovf_count++;
-
-	// Handle Status Registers
-	MTU3.TSR.BIT.TCFV = 0;
-
-	if (MTU3.TSR.BIT.TCFV)
-		ICU.IR[133].BIT.IR = 1;
-}
-/**
- * Interrupt input capture -> MTU4
- * MTIOC4B P73 CN3
- */
-void Excep_MTU4_TGIB4(void) {
-	/*g_hall_wheel.BACK_RIGHT.counts_per_tick=g_hall_wheel.BACK_LEFT.ovf_count*0xFFFF+MTU4.TGRB;
-	 g_hall_wheel.BACK_RIGHT.tick_count++;
-	 g_hall_wheel.BACK_RIGHT.ovf_count=0;
-	 MTU4.TSR.BIT.TGFC=0;
-	 */
-}
-
-/**
- * Interrupt MTU4 Overflow
- */
-void Excep_MTU4_TCIV4(void) {
-	/*
-	 g_hall_wheel.BACK_RIGHT.ovf_count++;
-	 MTU4.TSR.BIT.TCFV=0;
-	 */
-}
 /**
  * Interrupt input capture -> MTU6
  * MTIOC6B P95 CN7
@@ -307,22 +253,5 @@ void Excep_MTU6_TCIV6(void)
 	if (MTU6.TSR.BIT.TCFV)
 		ICU.IR[146].BIT.IR = 1;
 }
-/**
- * Interrupt input capture -> MTU7
- * MTIOC7B P93 CN7
- */
-void Excep_MTU7_TGIB7(void) {/*
-	g_hall_wheel.FRONT_RIGTH.counts_per_tick = (g_hall_wheel.FRONT_RIGTH.ovf_count << 16) + MTU7.TGRB;
-	g_hall_wheel.FRONT_RIGTH.tick_count++;
-	g_hall_wheel.FRONT_RIGTH.ovf_count = 0;
-	MTU7.TSR.BIT.TGFB = 0;
-*/}
 
-/**
- * Interrupt MTU7 Overflow
- */
-void Excep_MTU7_TCIV7(void) {/*
-	g_hall_wheel.FRONT_RIGTH.ovf_count++;
-	MTU7.TSR.BIT.TCFV = 0;
-*/}
 
