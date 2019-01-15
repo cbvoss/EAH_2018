@@ -50,7 +50,7 @@ struct VelocityWatchDog
  */
 void update_velocity_watchdog(enum Side side)
 {
-    unsigned int current_tick_count = opto_get_tick_count (side == RIGHT ? BACK_RIGHT : BACK_LEFT);
+    unsigned int current_tick_count = opto_get_tick_count ();
 
     if (current_tick_count != g_velocity_watch_dog.last_tick_count[side])
     {
@@ -88,7 +88,7 @@ float get_distance_between_magnet_ticks_m(enum wheel_selector side)
  */
 float get_time_between_opto_ticks_seconds(enum wheel_selector wheel)
 {
-    return ((float) opto_get_counts_per_tick(wheel, OPTO_COUNTS_PER_TICK_BUFFER_SIZE))
+    return ((float) opto_get_counts_per_tick(OPTO_COUNTS_PER_TICK_BUFFER_SIZE))
     		/ (ICLK / opto_get_counter_prescaler ());
 }
 
@@ -126,7 +126,7 @@ float tachometer_get_velocity_mps(enum wheel_selector wheel)
  */
 float tachometer_get_distance_meter(enum wheel_selector wheel)
 {
-    return opto_get_tick_count (wheel) * get_distance_between_magnet_ticks_m (wheel);
+    return opto_get_tick_count () * get_distance_between_magnet_ticks_m (wheel);
 }
 
 /**

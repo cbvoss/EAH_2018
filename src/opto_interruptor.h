@@ -25,9 +25,9 @@
 
 #define OPTO_COUNTS_PER_TICK_BUFFER_SIZE 8
 
-uint32_t opto_get_tick_count(enum wheel_selector wheel);
+uint32_t opto_get_tick_count();
 
-uint32_t opto_get_counts_per_tick(enum wheel_selector selector, uint32_t values_included_count);
+uint32_t opto_get_counts_per_tick(uint32_t values_included_count);
 
 uint32_t opto_get_counter_prescaler();
 

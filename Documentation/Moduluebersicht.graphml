@@ -109,8 +109,8 @@
               </y:NodeLabel>
               <y:UML clipContent="true" constraint="" omitDetails="false" stereotype="" use3DEffect="true">
                 <y:AttributeLabel/>
-                <y:MethodLabel>+opto_get_tick_count(SELECTOR): uint
-+opto_get_counts_per_tick(SELECTOR): uint
+                <y:MethodLabel>+opto_get_tick_count(): uint
++opto_get_counts_per_tick(): uint
 +opto_get_counter_prescaler(): uint</y:MethodLabel>
               </y:UML>
             </y:UMLClassNode>

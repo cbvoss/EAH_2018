@@ -81,19 +81,17 @@ void debug_drive_regulator(char startSign, int time1, int time2, int stoptime, i
 
 void debug_ticks()
 {
-	static unsigned int r = 0, l = 0;
+	static unsigned int o = 0;
 
-	unsigned int cr = opto_get_tick_count(BACK_RIGHT);
-	unsigned int cl = opto_get_tick_count(BACK_LEFT);
+	unsigned int co = opto_get_tick_count();
 
-	if (cr != r || cl != l)
+	if (co != o)
 	{
 		char buff[64];
 
-		r = cr;
-		l = cl;
+		o = co;
 
-		sprintf(buff, "Left: %d - Right: %d\n", l, r);
+		sprintf(buff, "Opto: %d\n", o);
 
 		serial_blue_write_string(buff);
 	}

@@ -36,7 +36,7 @@ struct OptoWheel
 	uint16_t counts_per_tick[OPTO_COUNTS_PER_TICK_BUFFER_SIZE];
 };
 
-struct OptoWheel g_wheels[WHEEL_COUNT];
+struct OptoWheel g_wheel;
 
 /**
  * Returns the prescaler of the counters used to measure the time between "opto ticks".
@@ -55,14 +55,14 @@ uint32_t opto_get_counter_prescaler()
  * @param enum wheel_selector
  * @return count of ticks
  */
-uint32_t opto_get_tick_count(enum wheel_selector wheel)
+uint32_t opto_get_tick_count()
 {
-	return g_wheels[wheel].tick_count;
+	return g_wheel.tick_count;
 }
 
-uint32_t opto_get_counts_per_tick(enum wheel_selector selector, uint32_t values_included_count)
+uint32_t opto_get_counts_per_tick(uint32_t values_included_count)
 {
-	struct OptoWheel* wheel = &g_wheels[selector];
+	struct OptoWheel* wheel = &g_wheel;
 
 	if (values_included_count > OPTO_COUNTS_PER_TICK_BUFFER_SIZE)
 		values_included_count = OPTO_COUNTS_PER_TICK_BUFFER_SIZE;
@@ -155,15 +155,14 @@ void opto_initialize(void) {
 	MTU.TSTRB.BIT.CST6 = 1;
 	//MTU.TSTRB.BIT.CST7 = 1;
 
-	for (int i = 0; i < WHEEL_COUNT; i++)
-	{
-		g_wheels[i].tick_count = 0;
-		g_wheels[i].cpt_index = 0;
-		g_wheels[i].ovf_count = 0xFFFF;
 
-		for (int j = 0; j < OPTO_COUNTS_PER_TICK_BUFFER_SIZE; j++)
-			g_wheels[i].counts_per_tick[j] = 0xFFFF;
-	}
+	g_wheel.tick_count = 0;
+	g_wheel.cpt_index = 0;
+	g_wheel.ovf_count = 0xFFFF;
+
+	for (int j = 0; j < OPTO_COUNTS_PER_TICK_BUFFER_SIZE; j++)
+		g_wheel.counts_per_tick[j] = 0xFFFF;
+
 }
 
 
@@ -173,7 +172,7 @@ void opto_initialize(void) {
  */
 void Excep_MTU6_TGIB6(void)
 {
-	struct OptoWheel* wheel = &g_wheels[BACK_RIGHT];
+	struct OptoWheel* wheel = &g_wheel;
 
 	wheel->counts_per_tick[wheel->cpt_index] = (wheel->ovf_count << 16) + MTU6.TGRB;
 	wheel->tick_count++;
@@ -193,7 +192,7 @@ void Excep_MTU6_TGIB6(void)
  */
 void Excep_MTU6_TCIV6(void)
 {
-	g_wheels[BACK_RIGHT].ovf_count++;
+	g_wheel.ovf_count++;
 
 	// Handle Status Registers
 	MTU6.TSR.BIT.TCFV = 0;
