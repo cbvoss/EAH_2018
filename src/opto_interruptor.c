@@ -24,6 +24,13 @@
 
 #define RINGBUFFER_INDEX(LENGTH, OFFSET) ((OFFSET) % (LENGTH))
 
+
+//--------------------------------------
+void debug_ticks();
+//--------------------------------------
+
+
+
 /**
    Global variables Opto
  * sum Counts of wheel ticks
@@ -179,6 +186,10 @@ void Excep_MTU6_TGIB6(void)
 	wheel->ovf_count = 0;
 
 	wheel->cpt_index = RINGBUFFER_INDEX(OPTO_COUNTS_PER_TICK_BUFFER_SIZE, wheel->cpt_index + 1);
+
+	//Debug Opto tickcount
+	debug_ticks();
+	//--------------------
 
 	// Handle Status Registers
 	MTU6.TSR.BIT.TGFB = 0;

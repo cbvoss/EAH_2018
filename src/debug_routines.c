@@ -81,9 +81,11 @@ void debug_drive_regulator(char startSign, int time1, int time2, int stoptime, i
 
 void debug_ticks()
 {
-	static unsigned int o = 0;
+	//static unsigned int o = 0;
+	static float o = 0;
 
-	unsigned int co = opto_get_tick_count();
+	//unsigned int co = opto_get_tick_count();
+	float co = tachometer_get_velocity_mps(BACK_RIGHT);
 
 	if (co != o)
 	{
@@ -91,7 +93,9 @@ void debug_ticks()
 
 		o = co;
 
-		sprintf(buff, "Opto: %d\n", o);
+		//sprintf(buff, "Opto: %d\n", o);
+
+		sprintf(buff, "Opto: %f\n", o);
 
 		serial_blue_write_string(buff);
 	}
