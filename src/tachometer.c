@@ -1,7 +1,7 @@
 /*
  * tachometer.c
  *
- *	This module transforms the hall sensor information to data with standard units.
+ *	This module transforms the opto sensor information to data with standard units.
  *
  *	Features:
  *		- velocity in meters per second and rotations per second
@@ -22,11 +22,11 @@
  *      		Tobias Hupel
  */
 
-#include "hall.h"
 #include "global_clock.h"
 #include "enums.h"
 #include "config_car.h"
 #include "math_tools.h"
+#include "opto_interruptor.h"
 
 // TODO: figure out the correct wheel radius
 
@@ -50,7 +50,7 @@ struct VelocityWatchDog
  */
 void update_velocity_watchdog(enum Side side)
 {
-    unsigned int current_tick_count = hall_get_tick_count (side == RIGHT ? BACK_RIGHT : BACK_LEFT);
+    unsigned int current_tick_count = opto_get_tick_count ();
 
     if (current_tick_count != g_velocity_watch_dog.last_tick_count[side])
     {
@@ -79,17 +79,17 @@ float get_distance_between_magnet_ticks_m(enum wheel_selector side)
 }
 
 /**
- * Calculates the time in seconds between tow "hall ticks" of a wheel.
+ * Calculates the time in seconds between tow "opto ticks" of a wheel.
  *
  * @param wheel
  * 		the wheel of interest
  * @return
  * 		the time in seconds
  */
-float get_time_between_hall_ticks_seconds(enum wheel_selector wheel)
+float get_time_between_opto_ticks_seconds(enum wheel_selector wheel)
 {
-    return ((float) hall_get_counts_per_tick(wheel, HALL_COUNTS_PER_TICK_BUFFER_SIZE))
-    		/ (ICLK / hall_get_counter_prescaler ());
+    return ((float) opto_get_counts_per_tick(OPTO_COUNTS_PER_TICK_BUFFER_SIZE))
+    		/ (ICLK / opto_get_counter_prescaler ());
 }
 
 /**
@@ -103,7 +103,7 @@ float get_time_between_hall_ticks_seconds(enum wheel_selector wheel)
 float tachometer_get_velocity_mps(enum wheel_selector wheel)
 {
     static float velocity = 0.0f;
-    float tick_time = get_time_between_hall_ticks_seconds (wheel);
+    float tick_time = get_time_between_opto_ticks_seconds (wheel);
 
     if (tick_time > 0.0f)
     {
@@ -126,7 +126,7 @@ float tachometer_get_velocity_mps(enum wheel_selector wheel)
  */
 float tachometer_get_distance_meter(enum wheel_selector wheel)
 {
-    return hall_get_tick_count (wheel) * get_distance_between_magnet_ticks_m (wheel);
+    return opto_get_tick_count () * get_distance_between_magnet_ticks_m (wheel);
 }
 
 /**

@@ -1,7 +1,7 @@
 /*
  * tachometer.h
  *
- *  This module transforms the hall sensor information to data with standard units.
+ *  This module transforms the opto sensor information to data with standard units.
  *
  *	Features:
  *		- velocity in meters per second and rotations per second
@@ -25,9 +25,9 @@
 #ifndef TACHOMETER_H_
 #define TACHOMETER_H_
 
-#include "hall.h"
 #include "global_clock.h"
 #include "enums.h"
+#include "opto_interruptor.h"
 
 float tachometer_get_velocity_mps(enum wheel_selector wheel);
 

@@ -13,7 +13,7 @@
 #include "tachometer.h"
 #include <stdio.h>
 #include "engine.h"
-#include "hall.h"
+#include "opto_interruptor.h"
 
 void debug_drive_regulator(char startSign, int time1, int time2, int stoptime, int inTime,
 		float initialV_mps, float secondV_mps, float thirdV_mps, char ubreak, float threshold)
@@ -81,19 +81,21 @@ void debug_drive_regulator(char startSign, int time1, int time2, int stoptime, i
 
 void debug_ticks()
 {
-	static unsigned int r = 0, l = 0;
+	//static unsigned int o = 0;
+	static float o = 0;
 
-	unsigned int cr = hall_get_tick_count(BACK_RIGHT);
-	unsigned int cl = hall_get_tick_count(BACK_LEFT);
+	//unsigned int co = opto_get_tick_count();
+	float co = tachometer_get_velocity_mps(BACK_RIGHT);
 
-	if (cr != r || cl != l)
+	if (co != o)
 	{
 		char buff[64];
 
-		r = cr;
-		l = cl;
+		o = co;
 
-		sprintf(buff, "Left: %d - Right: %d\n", l, r);
+		//sprintf(buff, "Opto: %d\n", o);
+
+		sprintf(buff, "Opto: %f\n", o);
 
 		serial_blue_write_string(buff);
 	}

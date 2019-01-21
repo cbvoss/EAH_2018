@@ -17,12 +17,12 @@
 
 #include "drive.h"
 #include "tachometer.h"
-#include "hall.h"
 #include "differential.h"
 #include "config_car.h"
 #include "servo.h"
 #include <math.h>
 #include "math_tools.h"
+#include "opto_interruptor.h"
 
 #define FIXED_UPDATE_TIME_STEP_S 0.001f					// Fixed Update Time Interval
 #define VELOCITY_REGULATOR_V 2000.0f					// Amplification of velocity regulator

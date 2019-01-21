@@ -44,10 +44,10 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="../../src/tachometer.h" />
-		<Unit filename="hall.c">
+		<Unit filename="opto_interruptor.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="hall.h" />
+		<Unit filename="opto_interruptor.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>
