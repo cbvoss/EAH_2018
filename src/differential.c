@@ -11,9 +11,9 @@
  * Calculates the inner and outer wheel velocity depending on the servo angle equivalent to a mechanic differential.
  *
  * @param W_m
- * 		the cars wheelbase
+ * 		the cars wheelbase (Achsenabstand vorne zu hinten)
  * @param T_m
- * 		the cars tread
+ * 		the cars tread (Abstand zwischen 2 Rädern einer Achse)
  * @param servoAngleAbs_rad
  * 		the current absoulte servo angle
  * @param targetVelocity_mps
