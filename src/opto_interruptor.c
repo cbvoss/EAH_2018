@@ -19,6 +19,8 @@
 #include "opto_interruptor.h"
 #include "vect.h"
 
+//TEST 123
+
 #define COUNTER_PRESCALER 1024			// Prescaler of counters
 #define WHEEL_COUNT 4
 
