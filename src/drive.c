@@ -17,7 +17,7 @@
 
 #include "drive.h"
 #include "tachometer.h"
-#include "hall.h"
+#include "opto_interruptor.h"
 #include "differential.h"
 #include "config_car.h"
 #include "servo.h"
@@ -26,7 +26,7 @@
 #include "iodefine.h"
 
 #define FIXED_UPDATE_TIME_STEP_S 0.001f					// Fixed Update Time Interval
-#define VELOCITY_REGULATOR_V 2000.0f					// Amplification of velocity regulator
+#define VELOCITY_REGULATOR_V 500.0f					// Amplification of velocity regulator //TEST, ORIGINAL VALUE WAS 2000.0f
 #define VELOCITY_REGULATOR_TI_INVERSE 0.35f				// Ti inverse of velocity regulator
 #define VELOCITY_REGULATOR_TD 0.0f						// Td of velocity regulator
 #define VELOCITY_REGULATOR_WINDUP 1000//5
@@ -273,7 +273,7 @@ void drive_fixed_update()
 		//1s=~50
 		case 0:
 			a = 300;//6s
-			g_regulation_targets.engines[side].abs_target_velocity_mps = 0;
+			g_regulation_targets.engines[side].abs_target_velocity_mps = 2;
 			break;
 		case 1:
 			a = 750;//15s
@@ -281,11 +281,12 @@ void drive_fixed_update()
 			break;
 		case 2:
 			a = 600;//12s
-			g_regulation_targets.engines[side].abs_target_velocity_mps = 1;
+			g_regulation_targets.engines[side].abs_target_velocity_mps = 2;
 			break;
 		case 3:
-			a = 150;//5s
-			g_regulation_targets.engines[side].abs_target_velocity_mps = 0;
+			a = 1500;//5s
+			g_regulation_targets.engines[side].abs_target_velocity_mps = 2;
+			b = 0;
 			break;
 		}
 		b++;
