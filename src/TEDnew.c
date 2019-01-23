@@ -233,9 +233,9 @@ void Binary_Picture_Check_SQUARE(long *Binary_Picture_Column) {
  * this function will correlate one column of that picture (or any other column) with a mask an will return the hamming weight of that column
  *
  * @param filter
- * 	the mask to cehck the column against
+ * 	the mask to check the column against
  * @param Binary_Picture_Column
- * 	pointer to the arry of the columns (which are just 8 numbers tbh)
+ * 	pointer to the array of the columns (which are just 8 numbers tbh)
  * @param column
  * 	# of the column we are looking at
  * @return

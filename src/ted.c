@@ -19,6 +19,7 @@
 #include <math.h>
 #include <stdio.h>
 #include "opto_interruptor.h"
+#include "TED_Version_3.h"
 
 /*
  * Effects of the different defines:
@@ -30,8 +31,9 @@
  * borders should be a multiple of the resolution
  */
 
-#define old_ted
+//#define old_ted
 //#define new_ted
+#define TED_VERSION_3
 //#define DEBUG_Track_events
 
 #define RESOLUTION_mm 1
@@ -85,6 +87,9 @@ void ted_initialize()
 #endif
 #ifdef old_ted
     ted_reset_track_event ();
+#endif
+#ifdef TED_VERSION_3
+    Ted_Version_3_Initialize();
 #endif
 }
 
