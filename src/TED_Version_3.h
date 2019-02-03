@@ -5,13 +5,8 @@
  *      Author: Maximilian Peuckert
  */
 
-#include "distance_alarm.h"
-#include "serial_blue.h"
-#include "Ir_Board.h"
-#include <stdio.h>
-#include "config_car.h"
-#include "servo.h"
-#include <math.h>
+#ifndef TED3_H_
+#define TED3_H_
 
 void Ted_Version_3_Initialize();
 void Ted_Picture_Print();
@@ -19,6 +14,13 @@ void Ted_Picture_Reset();
 void Ted_Picture_Create(char pattern);
 int Ted_Increment_Ringbuffer();
 void Ted_Picture_Update();
-int Ted_Brightness_Calulation();
+int Ted_Brightness_Calculation();
 char Ted_Line_Shift();
-int Ted_Popcount();
+int Ted_Popcount(char buffer);
+void ted_send(int brightness, char shifts);
+char euclid(int brightness, char shifts);
+void TED3_set_detected_track_event(int Type);
+enum track_event TED3_get_track_event();
+void TED3_update();
+
+#endif /* TED3_H_ */

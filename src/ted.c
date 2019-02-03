@@ -277,6 +277,11 @@ void ted_update()
 
     }
 #endif
+
+#ifdef TED_VERSION_3
+    TED3_update();
+#endif
+
 }
 
 /**
@@ -319,6 +324,7 @@ enum track_event ted_get_track_event()
 #ifdef old_ted
     return g_current_event;
 #endif
+    return 0;
 }
 
 #ifdef new_ted

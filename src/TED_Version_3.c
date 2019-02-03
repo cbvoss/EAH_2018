@@ -3,21 +3,48 @@
  *
  *  Created on: 15.01.2019
  *      Author: Maximilian Peuckert
+ *      		Stefan Schmolke
  *
  *  Reviewed by:
  */
 
 //includes
 #include "TED_Version_3.h"
+#include "distance_alarm.h"
+#include "serial_blue.h"
+#include "Ir_Board.h"
+#include <stdio.h>
+#include "config_car.h"
+#include "servo.h"
+#include <math.h>
 
 //defines
 #define PICTURE_LENGTH 240
 #define BOARD_LENGTH 8
+#define RESOLUTION 0.004f
+
+/*
+ *  need to be changed according to tests
+ */
+
+#define DOUBLELINE_BRIGHT 1
+#define DOUBLELINE_SHIFTS 1
+#define RIGHTLINE_BRIGHT 1
+#define RIGHTLINE_SHIFTS 1
+#define LEFTLINE_BRIGHT 1
+#define LEFTLINE_SHIFTS 1
+#define NORM_BRIGHT 1
+#define NORM_SHIFTS 1
+
+#define LINETYPESIZE 4
 
 char g_picture_binary[PICTURE_LENGTH];
 char g_picture_binary_old[PICTURE_LENGTH];
 char g_position_ringbuffer;
 
+enum track_event g_current_event_TED3;
+
+struct DistanceAlarm TED3_Distance;
 
 /*
  * initialize variables to zero
@@ -26,6 +53,9 @@ void Ted_Version_3_Initialize(){
 	for(int i = 0; i < PICTURE_LENGTH - 1; i++)
 		g_picture_binary[i] = 0;
 	g_position_ringbuffer = 0;
+	//distance alarm set
+	distance_alarm_new_mean (&TED3_Distance, RESOLUTION, 1);
+
 
 }
 /*
@@ -88,7 +118,7 @@ void Ted_Picture_Update(){
 /*
  * calculated the brightness in the binary picture for the cluster analyze
  */
-int Ted_Brightness_Calulation(){
+int Ted_Brightness_Calculation(){
 	int one_identify = 0;
 	for(int i=0; i < PICTURE_LENGTH - 1; i++){
 		if(Ted_Popcount(g_picture_binary[i]) == 1)
@@ -104,7 +134,7 @@ char Ted_Line_Shift(){
 	char line_new[BOARD_LENGTH];
 	char line_old[BOARD_LENGTH];
 	int n = 0;
-	int buffer;
+	int buffer[BOARD_LENGTH];
 
 	do{
 		for(int i = 0; i < BOARD_LENGTH - 1; i++){
@@ -112,7 +142,7 @@ char Ted_Line_Shift(){
 			line_new[i] = g_picture_binary[(n + 1) * BOARD_LENGTH + i];
 			for(int j = 0; j < BOARD_LENGTH - 1; j++){
 				buffer[i] = line_old[i] ^ line_new[i];
-				if(Ted_Popcount(buffer[i]) == 1)
+				if(Ted_Popcount(buffer[i]))
 					line_shift++;
 			}
 		}
@@ -127,5 +157,76 @@ int Ted_Popcount(char buffer){;
 		return 1;
 	else
 		return 0;
+}
+
+void ted_send(int brightness, char shifts) {
+	char buffer[20];
+	snprintf(buffer, 20, brightness, " br", shifts, " ls/n");
+	serial_blue_write_string(buffer);
+
+}
+
+char euclid(int brightness, char shifts) {
+	int min;		//minimal Distance
+	int minCount;	//Current Event which is the minimal
+	float distance[4];
+	char lineType[] = {1, 2, 3 ,4};
+
+	/*
+	 * Calculate the euclidic Distances to determine which Line should be detected
+	 * sqrt((y2-y1)²+(x2-x1)²)
+	 */
+	distance[0] = sqrt((pow(DOUBLELINE_BRIGHT-brightness, 2)+pow(DOUBLELINE_SHIFTS-shifts, 2)));
+	distance[1] = sqrt((pow(NORM_BRIGHT-brightness, 2)+pow(NORM_SHIFTS-shifts, 2)));
+	distance[2] = sqrt((pow(RIGHTLINE_BRIGHT-brightness, 2)+pow(RIGHTLINE_SHIFTS-shifts, 2)));
+	distance[3] = sqrt((pow(LEFTLINE_BRIGHT-brightness, 2)+pow(LEFTLINE_SHIFTS-shifts, 2)));
+
+	min = distance[0];
+	minCount = 0;
+	for (int i = 1; i <= LINETYPESIZE -1; i++) {
+		if (distance[i] < min) {
+			min = distance[i];
+			minCount = i;
+		}
+	}
+	return lineType[minCount];
+}
+
+void TED3_set_detected_track_event(int Type) {
+	switch(Type) {
+	case 0: g_current_event_TED3 = SLOW;
+			serial_blue_write_string("slow");
+			break;
+	case 1: g_current_event_TED3 = NONE;
+			break;
+	case 2: g_current_event_TED3 = JUMP_RIGHT;
+			serial_blue_write_string("right");
+			break;
+	case 3: g_current_event_TED3 = JUMP_LEFT;
+			serial_blue_write_string("left");
+			break;
+	default: g_current_event_TED3 = NONE;
+	//TODO clear Picture after that and start new
+	}
+}
+
+enum track_event TED3_get_track_event() {
+	return g_current_event_TED3;
+}
+
+void TED3_update() {
+
+	if (distance_alarm_has_distance_reached(&TED3_Distance)){
+		distance_alarm_reset (&TED3_Distance);
+		int brightness;
+		int shifts;
+		Ted_Picture_Reset();
+		Ted_Picture_Update();
+		brightness = Ted_Brightness_Calculation();
+		shifts = Ted_Line_Shift();
+		ted_send(brightness, shifts);
+		char type = euclid(brightness, shifts);
+		TED3_set_detected_track_event(type);
+	}
 }
 
