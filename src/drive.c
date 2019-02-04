@@ -211,89 +211,20 @@ void drive_accelerate_to(enum Side side, float velocity_mps, char use_break)
  * 		the velocity of the outer wheel
  *@param servoAngleAbs_rad
  * 		the current absoulte servo angle
- */
+ *//*
 float calculate_velocity_inner_wheel(float W_m, float T_m, float velocity_outer_wheel, float servoAngleAbs_rad){
 	float r2 = W_m / tanf(servoAngleAbs_rad);
 	float r1 = r2 - (T_m / 2);
 	float r3 = r2 + (T_m / 2);
 
 	return r1 / r3 * velocity_outer_wheel;
-}
+}*/
 
 /**
  *
  */
 void drive_fixed_update()
 {
-    //testing
-	enum Side side;
-	float abs_current_velocity_mps, velocity_deviation_mps, new_pulse_width;
-	char test = 1;
-	int a = 1000; 	//20s
-	g_regulation_targets.engines[side].abs_target_velocity_mps = 3; //3mps
-	int b = 0;
-	int i;
-	PORTA.DDR.BIT.B0 = 1;
-	PORT7.ICR.BIT.B2 = 0;
-	PORTA.DR.BIT.B0 = 0;//LED an
-
-	while (test){
-
-		for (i=1; i<=a; i++){
-			//Geschwindigkeit für die Räder berechnen und setzten
-			for (side = RIGHT; side <= LEFT; side++){
-				//get current velocity of the trailing wheel from tachometer in meters per second
-				abs_current_velocity_mps = tachometer_get_velocity_mps (side == LEFT ? BACK_LEFT : BACK_RIGHT);
-
-				//restrict current velocity to a max value
-				abs_current_velocity_mps =
-						abs_current_velocity_mps > MAX_CAR_VELOCITY_ABS_MPS ? MAX_CAR_VELOCITY_ABS_MPS : abs_current_velocity_mps;
-
-				// Calculate velocity deviation and add the velocity deviation to the sum for regulation purposes
-				velocity_deviation_mps = g_regulation_targets.engines[side].abs_target_velocity_mps
-						- abs_current_velocity_mps;
-
-				// Calculate new pulse width, PID - Regulator
-				new_pulse_width = regulator_calculate_value (&g_regulation_targets.engines[side].regulator,
-						velocity_deviation_mps) * VELOCITY_REGULATOR_OUTPUT_SCALE_FACTOR;
-
-				if (new_pulse_width < 0)
-					new_pulse_width = 0;
-
-				//set mode and pulse_width
-				engine_set_mode (side, FORWARD_FREERUN);
-				engine_set_pulse_width_pm (side, new_pulse_width);
-			}
-			//Auf Overflow vom Timer1 warten
-			while (!GPT1.GTST.BIT.TCFPO);
-			GPT1.GTST.BIT.TCFPO = 0;
-
-		}
-		/*
-		switch (a){
-		//1s=~50
-		case 0:
-			a = 300;//6s
-			g_regulation_targets.engines[side].abs_target_velocity_mps = 2;
-			break;
-		case 1:
-			a = 750;//15s
-			g_regulation_targets.engines[side].abs_target_velocity_mps = 2;
-			break;
-		case 2:
-			a = 600;//12s
-			g_regulation_targets.engines[side].abs_target_velocity_mps = 2;
-			break;
-		case 3:
-			a = 1500;//5s
-			g_regulation_targets.engines[side].abs_target_velocity_mps = 2;
-			b = 0;
-			break;
-		}
-		*/
-		b++;
-	}
-	/*
 	enum Side side;
     float abs_current_velocity_mps, velocity_deviation_mps, new_pulse_width, servoAngle_rad;
 
@@ -318,7 +249,7 @@ void drive_fixed_update()
     {
         //get current velocity of the trailing wheel from tachometer in meters per second
     	abs_current_velocity_mps = tachometer_get_velocity_mps (side == LEFT ? BACK_LEFT : BACK_RIGHT);
-
+    	/*
         if (servoAngle_rad < 0 && side == RIGHT) 		//current turn = right, left wheel is faster
         {
         	abs_current_velocity_mps = calculate_velocity_inner_wheel(differenzial_W, differenzial_B, abs_current_velocity_mps, servoAngle_rad);
@@ -326,7 +257,7 @@ void drive_fixed_update()
         else if (servoAngle_rad > 0 && side == LEFT) 	//current turn = left, right wheel is faster
         {
         	abs_current_velocity_mps = calculate_velocity_inner_wheel(differenzial_W, differenzial_B, abs_current_velocity_mps, servoAngle_rad);
-        }
+        }*/
 
     	//restrict current velocity to a max value
         abs_current_velocity_mps =
@@ -346,7 +277,7 @@ void drive_fixed_update()
 */
 
         // Calculate new pulse width, PID - Regulator
- /*       new_pulse_width = regulator_calculate_value (&g_regulation_targets.engines[side].regulator,
+        new_pulse_width = regulator_calculate_value (&g_regulation_targets.engines[side].regulator,
         		velocity_deviation_mps) * VELOCITY_REGULATOR_OUTPUT_SCALE_FACTOR;
 
         if (new_pulse_width < 0)
@@ -366,7 +297,7 @@ void drive_fixed_update()
                 engine_set_pulse_width_pm (side, g_regulation_targets.engines[side].active_break_pw);
             }
             else if (new_pulse_width == 0 /*|| (g_regulation_targets.engines[side].use_regulator_break
-                    && velocity_deviation_mps < g_regulation_targets.engines[side].break_threshold_mps)*//* )
+                    && velocity_deviation_mps < g_regulation_targets.engines[side].break_threshold_mps)*/ )
            {
                 engine_set_mode (side, BREAK);
             }
@@ -380,6 +311,6 @@ void drive_fixed_update()
         {
             engine_set_mode (side, BREAK);			// kann zu Problemen führen, da die Motoren sehr schnell Bremsen können
         }
-    }*/
+    }
 }
 
