@@ -15,7 +15,6 @@
 #include "Ir_Board.h"
 #include <stdio.h>
 #include "config_car.h"
-#include "servo.h"
 #include <math.h>
 
 //defines
@@ -118,7 +117,7 @@ void Ted_Picture_Update(){
 /*
  * calculated the brightness in the binary picture for the cluster analyze
  */
-int Ted_Brightness_Calculation(){
+char Ted_Brightness_Calculation(){
 	int one_identify = 0;
 	for(int i=0; i < PICTURE_LENGTH - 1; i++){
 		if(Ted_Popcount(g_picture_binary[i]) == 1)
@@ -152,25 +151,34 @@ char Ted_Line_Shift(){
 /*
  * simple popcount algorithm, detect 1
  */
-int Ted_Popcount(char buffer){;
+char Ted_Popcount(char buffer){;
 	if(buffer |= 0)
 		return 1;
 	else
 		return 0;
 }
 
-void ted_send(int brightness, char shifts) {
+/*
+ * sends the brightness and shift values via bluetooth
+ */
+
+void ted_send(char brightness, char shifts) {
 	char buffer[20];
-	snprintf(buffer, 20, brightness, " br", shifts, " ls/n");
+	snprintf(buffer, 20, "brightness %d shifts %d", brightness, shifts);
 	serial_blue_write_string(buffer);
 
 }
 
-char euclid(int brightness, char shifts) {
+/*
+ * calculates the euclidic distance of the brightness & shifts pair to
+ * the predefined values
+ */
+
+char euclid(char brightness, char shifts) {
 	int min;		//minimal Distance
 	int minCount;	//Current Event which is the minimal
 	float distance[4];
-	char lineType[] = {1, 2, 3 ,4};
+
 
 	/*
 	 * Calculate the euclidic Distances to determine which Line should be detected
@@ -189,8 +197,12 @@ char euclid(int brightness, char shifts) {
 			minCount = i;
 		}
 	}
-	return lineType[minCount];
+	return minCount;
 }
+
+/*
+ * Sets the detected Track event SLOW, NONE, JUMP_RIGHT, JUMP_LEFT
+ */
 
 void TED3_set_detected_track_event(int Type) {
 	switch(Type) {
@@ -206,20 +218,27 @@ void TED3_set_detected_track_event(int Type) {
 			serial_blue_write_string("left");
 			break;
 	default: g_current_event_TED3 = NONE;
-	//TODO clear Picture after that and start new
+
 	}
 }
+
+/*
+ * getter for the Track Event
+ */
 
 enum track_event TED3_get_track_event() {
 	return g_current_event_TED3;
 }
+/*
+ * gets called from the main function to update the track event
+ */
 
 void TED3_update() {
 
 	if (distance_alarm_has_distance_reached(&TED3_Distance)){
-		distance_alarm_reset (&TED3_Distance);
-		int brightness;
-		int shifts;
+		distance_alarm_reset(&TED3_Distance);
+		char brightness;
+		char shifts;
 		Ted_Picture_Reset();
 		Ted_Picture_Update();
 		brightness = Ted_Brightness_Calculation();
