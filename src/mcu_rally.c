@@ -146,9 +146,31 @@ void update_modules()
  */
 void update_modules_fixed()
 {
-    // place your module fixed update functions here
+    static int zehn_ms = 100;
+    float distance = 0;
+
+	// place your module fixed update functions here
 	drive_curve_update_fixed();
     drive_fixed_update ();
+
+    zehn_ms--;
+    if (zehn_ms <= 0){
+    	zehn_ms = 100;
+    	debug_ticks();
+    	distance = tachometer_get_distance_meter(BACK_RIGHT);
+    	if (distance >= 0 && distance < 2){
+    		g_regulation_targets.engines[LEFT].abs_target_velocity_mps = 1;
+    		g_regulation_targets.engines[RIGHT].abs_target_velocity_mps = 1;
+    	}
+    	else if (distance >= 2 && distance < 4){
+    		g_regulation_targets.engines[LEFT].abs_target_velocity_mps = 0.5;
+    		g_regulation_targets.engines[RIGHT].abs_target_velocity_mps = 0.5;
+    	}
+    	else{
+    		g_regulation_targets.engines[LEFT].abs_target_velocity_mps = 0;
+    		g_regulation_targets.engines[RIGHT].abs_target_velocity_mps = 0;
+    	}
+    }
 
 }
 
@@ -424,6 +446,7 @@ void mcu_rally_main()
         {
         	global_clock_reset_timer (&g_ms_tick);
         	update_modules_fixed ();
+
         }
     }
 }

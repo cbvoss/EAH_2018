@@ -269,7 +269,8 @@ void drive_fixed_update()
 			GPT1.GTST.BIT.TCFPO = 0;
 
 		}
-		switch (b){
+		/*
+		switch (a){
 		//1s=~50
 		case 0:
 			a = 300;//6s
@@ -289,6 +290,7 @@ void drive_fixed_update()
 			b = 0;
 			break;
 		}
+		*/
 		b++;
 	}
 	/*
