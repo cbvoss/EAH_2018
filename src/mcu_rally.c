@@ -366,7 +366,7 @@ void mcu_rally_main()
         
         static float targetVelocity_mps = DRIVE_SPEED_MPS;
 
-        current_track_event = ted_get_track_event ();
+        current_track_event = NONE; //ted_get_track_event (); -> NONE ist für den Test der PWM
 
 #ifdef ENABLE_CONTROLLER_STATE_MACHINE
         switch (current_track_event)
@@ -411,13 +411,13 @@ void mcu_rally_main()
                 }
             break;
             case NONE:
-                debugEventMapState ();
+                //debugEventMapState ();
 
 #if defined(USE_FUZZY_TARGET_SPEED)
                 targetVelocity_mps = fuzzy_calculate_target_velocity_mps(ir_get_pattern(), servo_get_position_angle_deg(), targetVelocity_mps);
 #endif
-                drive_curve_set_max_speed (targetVelocity_mps);
-                drive_curve_set_active (1);
+                //drive_curve_set_max_speed (targetVelocity_mps);
+                //drive_curve_set_active (1);
             break;
         }
 #endif
