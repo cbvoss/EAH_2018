@@ -152,7 +152,7 @@ void update_modules_fixed()
     float distance = 0;
 
 	// place your module fixed update functions here
-	drive_curve_update_fixed();
+	//drive_curve_update_fixed();
     //drive_fixed_update ();
     //Für Test der PWM
 	enum Side side;
@@ -162,11 +162,11 @@ void update_modules_fixed()
     	zehn_ms = 100;
     	debug_ticks();
     	distance = tachometer_get_distance_meter(BACK_RIGHT);
-    	if (distance >= 0 && distance < 2){
+    	if (distance >= 0 && distance < 0.1f){
     		for (side = RIGHT; side <= LEFT; side++)
     		    {
     		    	engine_set_mode(side, FORWARD_FREERUN);
-    		    	new_pulse_width = 500;		//Hier den Wert für die Geschwindigkeit setzten, 0=Stillstand, 1000=max Speed
+    		    	new_pulse_width = 200;		//Hier den Wert für die Geschwindigkeit setzten, 0=Stillstand, 1000=max Speed
     		    	engine_set_pulse_width_pm(side,new_pulse_width);
     		    }
     	}
