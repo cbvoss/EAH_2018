@@ -153,24 +153,30 @@ void update_modules_fixed()
 
 	// place your module fixed update functions here
 	drive_curve_update_fixed();
-    drive_fixed_update ();
-
+    //drive_fixed_update ();
+    //Für Test der PWM
+	enum Side side;
+	float new_pulse_width;
     zehn_ms--;
     if (zehn_ms <= 0){
     	zehn_ms = 100;
     	debug_ticks();
     	distance = tachometer_get_distance_meter(BACK_RIGHT);
     	if (distance >= 0 && distance < 2){
-    		g_regulation_targets.engines[LEFT].abs_target_velocity_mps = 1;
-    		g_regulation_targets.engines[RIGHT].abs_target_velocity_mps = 1;
-    	}
-    	else if (distance >= 2 && distance < 4){
-    		g_regulation_targets.engines[LEFT].abs_target_velocity_mps = 0.5;
-    		g_regulation_targets.engines[RIGHT].abs_target_velocity_mps = 0.5;
+    		for (side = RIGHT; side <= LEFT; side++)
+    		    {
+    		    	engine_set_mode(side, FORWARD_FREERUN);
+    		    	new_pulse_width = 500;		//Hier den Wert für die Geschwindigkeit setzten, 0=Stillstand, 1000=max Speed
+    		    	engine_set_pulse_width_pm(side,new_pulse_width);
+    		    }
     	}
     	else{
-    		g_regulation_targets.engines[LEFT].abs_target_velocity_mps = 0;
-    		g_regulation_targets.engines[RIGHT].abs_target_velocity_mps = 0;
+    		for (side = RIGHT; side <= LEFT; side++)
+    		    		    {
+    		    		    	engine_set_mode(side, FORWARD_FREERUN);
+    		    		    	new_pulse_width = 0;		//Hier den Wert für die Geschwindigkeit setzten, 0=Stillstand, 1000=max Speed
+    		    		    	engine_set_pulse_width_pm(side,new_pulse_width);
+    		    		    }
     	}
     }
 

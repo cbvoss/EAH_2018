@@ -229,87 +229,12 @@ void drive_fixed_update()
     float velocity_factor = 500;  //2 mps * 500 = 1000 (max. Speed), declaring the max Speed
     float new_pulse_width;
 
-    //float abs_current_velocity_mps, velocity_deviation_mps, new_pulse_width;
-    /*
-    if (g_differential_active)
-    {
-        servoAngle_rad = angle_deg_to_rad_f(servo_get_position_angle_deg());
-
-        if (servoAngle_rad < 0) 		//current turn = right
-        {
-        	diff_calculate(differenzial_W, differenzial_B, fabs(servoAngle_rad), g_differential_target_velocity_mps,
-        			&g_regulation_targets.engines[RIGHT].abs_target_velocity_mps, &g_regulation_targets.engines[LEFT].abs_target_velocity_mps);
-        }
-        else if (servoAngle_rad > 0) 	//current turn = left
-        {
-        	diff_calculate(differenzial_W, differenzial_B, fabs(servoAngle_rad), g_differential_target_velocity_mps,
-        	    			&g_regulation_targets.engines[LEFT].abs_target_velocity_mps, &g_regulation_targets.engines[RIGHT].abs_target_velocity_mps);
-        }
-    }*/
-
     for (side = RIGHT; side <= LEFT; side++)
     {
     	//Test des PWM-Geschwindigkeits-Verhältnisses
-    	enginge_set_mode(side, FORWARD_FREERUN);
+    	engine_set_mode(side, FORWARD_FREERUN);
     	new_pulse_width = g_regulation_targets.engines[side].abs_target_velocity_mps*velocity_factor;
-    	enginge_set_pulse_width_pm(side,new_pulse_width);
-
-
-
-
-    	/*abs_current_velocity_mps = tachometer_get_velocity_mps (side == LEFT ? BACK_LEFT : BACK_RIGHT);
-
-        abs_current_velocity_mps =
-                abs_current_velocity_mps > MAX_CAR_VELOCITY_ABS_MPS ? MAX_CAR_VELOCITY_ABS_MPS : abs_current_velocity_mps;
-
-    	// Calculate velocity deviation and add the velocity deviation to the sum for regulation purposes
-        velocity_deviation_mps = g_regulation_targets.engines[side].abs_target_velocity_mps
-                - abs_current_velocity_mps;
-
-/*      recalculate regulator parameters (formula provided by Micheal Cieslak)
-        float velocity_percentage = percentage_f(abs_current_velocity_mps, MAX_CAR_VELOCITY_ABS_MPS);
-
-        regulator_set_V(&g_regulation_targets.engines[side].regulator, -0.01637 * velocity_percentage + 3.168);
-
-        regulator_set_ti_inverse(&g_regulation_targets.engines[side].regulator,
-        	0.2853 * expf(velocity_percentage * 0.03195));
-*/
-
-        // Calculate new pulse width, PID - Regulator
-        new_pulse_width = regulator_calculate_value (&g_regulation_targets.engines[side].regulator,
-        		velocity_deviation_mps) * VELOCITY_REGULATOR_OUTPUT_SCALE_FACTOR;
-
-        if (new_pulse_width < 0)
-        	new_pulse_width = 0;
-
-        // velocity is near zero -> we can ignore a target direction mode change
-        if (abs_current_velocity_mps < VELOCITY_TO_ZERO_TOLERANCE_MPS)
-            g_regulation_targets.engines[side].target_direction_mode_changed = 0;
-
-        // We are driving in the desired direction -> Regulator can operate
-        if (!g_regulation_targets.engines[side].target_direction_mode_changed)
-        {
-            // Should the regulator use the break
-            if (g_regulation_targets.engines[side].active_break)
-            {
-                engine_set_mode (side, BACKWARD_BREAK);
-                engine_set_pulse_width_pm (side, g_regulation_targets.engines[side].active_break_pw);
-            }
-            else if (new_pulse_width == 0 /*|| (g_regulation_targets.engines[side].use_regulator_break
-                    && velocity_deviation_mps < g_regulation_targets.engines[side].break_threshold_mps)*/)
-            /*{
-                engine_set_mode (side, BREAK);
-            }
-            else
-            {
-                engine_set_pulse_width_pm (side, (unsigned int) new_pulse_width);
-                engine_set_mode (side, g_regulation_targets.engines[side].target_direction_mode);
-            }
-        }
-        else // Break down, because the target direction has been changed
-        {
-            engine_set_mode (side, BREAK);
-        }*/
+    	engine_set_pulse_width_pm(side,new_pulse_width);
     }
 }
 
