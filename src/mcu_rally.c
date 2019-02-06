@@ -12,6 +12,7 @@
 #include "serial_com.h"
 #include "engine.h"
 #include "servo.h"
+#include "TED_Version_3.h"
 #include "ted.h"
 #include "controller_hold_line.h"
 #include "adc.h"
@@ -31,6 +32,7 @@
 #include "opto_interruptor.h"
 #include "spi.h"
 #include "TEDnew.h"
+
 
 #ifdef DEBUG
 #include "data_log.h"
@@ -110,7 +112,7 @@ void initialize_modules()
     servo_initialize ();
     servo_set_borders (SERVO_LEFT, SERVO_CENTER, SERVO_RIGHT);
     drive_initialize ();
-    ted_initialize ();
+    Ted_Version_3_Initialize();
     serial_blue_initialize ();
     tachometer_initialize ();
     adc_initialize ();
@@ -131,7 +133,7 @@ void update_modules()
     // place your module update functions here
     tachometer_update ();
     hold_line_update ();
-    ted_update ();
+    TED3_update();
     drive_curve_update ();
     controller_jump_update ();
     controller_square_update ();
@@ -363,7 +365,7 @@ void mcu_rally_main()
 
         static enum track_event last_track_event = NONE;
         enum track_event current_track_event = NONE;
-        
+		
         static float targetVelocity_mps = DRIVE_SPEED_MPS;
 
         current_track_event = NONE; //ted_get_track_event (); -> NONE ist für den Test der PWM

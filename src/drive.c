@@ -225,10 +225,12 @@ float calculate_velocity_inner_wheel(float W_m, float T_m, float velocity_outer_
  */
 void drive_fixed_update()
 {
-	enum Side side;
-    float abs_current_velocity_mps, velocity_deviation_mps, new_pulse_width, servoAngle_rad;
+    enum Side side;
+    float velocity_factor = 500;  //2 mps * 500 = 1000 (max. Speed), declaring the max Speed
+    float new_pulse_width;
 
-    //recalculate the velocity for each wheel if necessary using the differential
+    //float abs_current_velocity_mps, velocity_deviation_mps, new_pulse_width;
+    /*
     if (g_differential_active)
     {
         servoAngle_rad = angle_deg_to_rad_f(servo_get_position_angle_deg());
@@ -243,23 +245,20 @@ void drive_fixed_update()
         	diff_calculate(differenzial_W, differenzial_B, fabs(servoAngle_rad), g_differential_target_velocity_mps,
         	    			&g_regulation_targets.engines[LEFT].abs_target_velocity_mps, &g_regulation_targets.engines[RIGHT].abs_target_velocity_mps);
         }
-    }
+    }*/
 
     for (side = RIGHT; side <= LEFT; side++)
     {
-        //get current velocity of the trailing wheel from tachometer in meters per second
-    	abs_current_velocity_mps = tachometer_get_velocity_mps (side == LEFT ? BACK_LEFT : BACK_RIGHT);
-    	/*
-        if (servoAngle_rad < 0 && side == RIGHT) 		//current turn = right, left wheel is faster
-        {
-        	abs_current_velocity_mps = calculate_velocity_inner_wheel(differenzial_W, differenzial_B, abs_current_velocity_mps, servoAngle_rad);
-        }
-        else if (servoAngle_rad > 0 && side == LEFT) 	//current turn = left, right wheel is faster
-        {
-        	abs_current_velocity_mps = calculate_velocity_inner_wheel(differenzial_W, differenzial_B, abs_current_velocity_mps, servoAngle_rad);
-        }*/
+    	//Test des PWM-Geschwindigkeits-Verhältnisses
+    	enginge_set_mode(side, FORWARD_FREERUN);
+    	new_pulse_width = g_regulation_targets.engines[side].abs_target_velocity_mps*velocity_factor;
+    	enginge_set_pulse_width_pm(side,new_pulse_width);
 
-    	//restrict current velocity to a max value
+
+
+
+    	/*abs_current_velocity_mps = tachometer_get_velocity_mps (side == LEFT ? BACK_LEFT : BACK_RIGHT);
+
         abs_current_velocity_mps =
                 abs_current_velocity_mps > MAX_CAR_VELOCITY_ABS_MPS ? MAX_CAR_VELOCITY_ABS_MPS : abs_current_velocity_mps;
 
@@ -297,8 +296,8 @@ void drive_fixed_update()
                 engine_set_pulse_width_pm (side, g_regulation_targets.engines[side].active_break_pw);
             }
             else if (new_pulse_width == 0 /*|| (g_regulation_targets.engines[side].use_regulator_break
-                    && velocity_deviation_mps < g_regulation_targets.engines[side].break_threshold_mps)*/ )
-           {
+                    && velocity_deviation_mps < g_regulation_targets.engines[side].break_threshold_mps)*/)
+            /*{
                 engine_set_mode (side, BREAK);
             }
             else
@@ -309,8 +308,8 @@ void drive_fixed_update()
         }
         else // Break down, because the target direction has been changed
         {
-            engine_set_mode (side, BREAK);			// kann zu Problemen führen, da die Motoren sehr schnell Bremsen können
-        }
+            engine_set_mode (side, BREAK);
+        }*/
     }
 }
 
