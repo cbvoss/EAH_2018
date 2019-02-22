@@ -49,10 +49,11 @@ struct DistanceAlarm TED3_Distance;
  * initialize variables to zero
  */
 void Ted_Version_3_Initialize(){
+
 	for(int i = 0; i < PICTURE_LENGTH - 1; i++)
 		g_picture_binary[i] = 0;
-	g_position_ringbuffer = 0;
-	//distance alarm set
+	//g_position_ringbuffer = 0;
+
 	distance_alarm_new_mean (&TED3_Distance, RESOLUTION, 1);
 
 
@@ -61,9 +62,9 @@ void Ted_Version_3_Initialize(){
  * send the picture over bluetooth
  */
 void Ted_Picture_Print(){
-	char buffer[64];
+	char buffer[256];
 	for(int i = 0; i < PICTURE_LENGTH - 1; i++)	{
-		snprintf(buffer, 256, "%c\n", g_picture_binary);
+		sprintf(buffer, "%c\n", g_picture_binary);
 		serial_blue_write_string(buffer);
 	}
 }
@@ -105,6 +106,18 @@ int Ted_Increment_Ringbuffer(){
  * TODO description of Ted_Picture_Update
  */
 void Ted_Picture_Update(){
+	int i = 7;
+	char buff[64];
+	for (int j = 0; j <= PICTURE_LENGTH-1; j++) {
+			g_picture_binary[j] = ir_get_value(i);
+			i -= 1;
+			if (i<=-1)
+				i = 7;
+			sprintf(buff,"%c \n", g_picture_binary[j]);
+			serial_blue_write_string(buff);
+
+	}
+	/*
 	signed char buffer;
 	for (int i=0; i < BOARD_LENGTH - 1; i++){
 		buffer = ir_get_value(i);
@@ -113,22 +126,42 @@ void Ted_Picture_Update(){
 				buffer = -1;
 	}
 	Ted_Picture_Create(buffer);
+	*/
 }
 /*
  * calculated the brightness in the binary picture for the cluster analyze
  */
-char Ted_Brightness_Calculation(){
+int Ted_Brightness_Calculation(){
 	int one_identify = 0;
+	int j = 0;
 	for(int i=0; i < PICTURE_LENGTH - 1; i++){
-		if(Ted_Popcount(g_picture_binary[i]) == 1)
-			one_identify++;
+		if(Ted_Popcount(g_picture_binary[i])) {
+			if (j <= 3)
+				one_identify -= 1;
+			else
+				one_identify++;
+		}
+		j++;
+		if (j >= 7)
+			j = 0;
 	}
 	return one_identify;
 }
 /*
  * calculated the line shifts in the binary picture for the cluster analyze
  */
-char Ted_Line_Shift(){
+int Ted_Line_Shift(){
+	int shift = 0;
+	int line_shift = 0;
+	for (int i = 0; i <= PICTURE_LENGTH-9; i++) {
+		shift = g_picture_binary[i] ^ g_picture_binary[i+8];
+		if (shift)
+			line_shift++;
+	}
+	return line_shift;
+
+
+	/*
 	char line_shift = 0;
 	char line_new[BOARD_LENGTH];
 	char line_old[BOARD_LENGTH];
@@ -147,11 +180,12 @@ char Ted_Line_Shift(){
 		}
 	}while(n < 30);
 	return line_shift;
+	*/
 }
 /*
  * simple popcount algorithm, detect 1
  */
-char Ted_Popcount(char buffer){;
+int Ted_Popcount(char buffer){;
 	if(buffer |= 0)
 		return 1;
 	else
@@ -163,8 +197,8 @@ char Ted_Popcount(char buffer){;
  */
 
 void ted_send(char brightness, char shifts) {
-	char buffer[20];
-	snprintf(buffer, 20, "brightness %d shifts %d", brightness, shifts);
+	char buffer[65];
+	sprintf(buffer, "brightness %c shifts %c \n", brightness, shifts);
 	serial_blue_write_string(buffer);
 
 }
@@ -178,7 +212,6 @@ char euclid(char brightness, char shifts) {
 	int min;		//minimal Distance
 	int minCount;	//Current Event which is the minimal
 	float distance[4];
-
 
 	/*
 	 * Calculate the euclidic Distances to determine which Line should be detected
@@ -206,8 +239,8 @@ char euclid(char brightness, char shifts) {
 
 void TED3_set_detected_track_event(int Type) {
 	switch(Type) {
-	case 0: g_current_event_TED3 = SLOW;
-			serial_blue_write_string("slow");
+	case 0: g_current_event_TED3 = SQUARE;
+			serial_blue_write_string("square");
 			break;
 	case 1: g_current_event_TED3 = NONE;
 			break;
@@ -218,7 +251,6 @@ void TED3_set_detected_track_event(int Type) {
 			serial_blue_write_string("left");
 			break;
 	default: g_current_event_TED3 = NONE;
-
 	}
 }
 
@@ -227,6 +259,7 @@ void TED3_set_detected_track_event(int Type) {
  */
 
 enum track_event TED3_get_track_event() {
+
 	return g_current_event_TED3;
 }
 /*
@@ -234,18 +267,42 @@ enum track_event TED3_get_track_event() {
  */
 
 void TED3_update() {
-
+	char buff[64];
+	//sprintf(buff, "1");
+	//serial_blue_write_string(buff);
 	if (distance_alarm_has_distance_reached(&TED3_Distance)){
+		//sprintf(buff, "DRINNE\n");
+		//serial_blue_write_string(buff);
 		distance_alarm_reset(&TED3_Distance);
-		char brightness;
-		char shifts;
+		//sprintf(buff, "RESET\n");
+		//serial_blue_write_string(buff);
+		int brightness;
+		int shifts;
 		Ted_Picture_Reset();
+		//sprintf(buff, "PICRESET\n");
+		//		serial_blue_write_string(buff);
 		Ted_Picture_Update();
+		//sprintf(buff, "UPDATE\n");
+		//		serial_blue_write_string(buff);
 		brightness = Ted_Brightness_Calculation();
+		//sprintf(buff, "BRICALC\n");
+		//				serial_blue_write_string(buff);
 		shifts = Ted_Line_Shift();
+		//sprintf(buff, "SHIFTS\n");
+		//				serial_blue_write_string(buff);
 		ted_send(brightness, shifts);
+		//sprintf(buff, "SEND\n");
+		//						serial_blue_write_string(buff);
 		char type = euclid(brightness, shifts);
+		//sprintf(buff, "EUCLID\n");
+		//						serial_blue_write_string(buff);
 		TED3_set_detected_track_event(type);
+
 	}
 }
-
+/*
+ * gets called from main function to reset the current track event
+ */
+void TED3_reset_track_event() {
+	g_current_event_TED3 = NONE;
+}

@@ -14,13 +14,14 @@ void Ted_Picture_Reset();
 void Ted_Picture_Create(char pattern);
 int Ted_Increment_Ringbuffer();
 void Ted_Picture_Update();
-char Ted_Brightness_Calculation();
-char Ted_Line_Shift();
-char Ted_Popcount(char buffer);
+int Ted_Brightness_Calculation();
+int Ted_Line_Shift();
+int Ted_Popcount(char buffer);
 void ted_send(char brightness, char shifts);
 char euclid(char brightness, char shifts);
 void TED3_set_detected_track_event(int Type);
 enum track_event TED3_get_track_event();
 void TED3_update();
+void TED3_reset_track_event();
 
 #endif /* TED3_H_ */
