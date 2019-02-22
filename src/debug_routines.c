@@ -85,12 +85,12 @@ void debug_ticks()
 	//unsigned int co = opto_get_tick_count();
 	float v = tachometer_get_velocity_mps(BACK_RIGHT);
 	//float s = tachometer_get_distance_meter(BACK_RIGHT);
-	unsigned int pwm = engine_get_pulse_width_pm(RIGHT);
+	//unsigned int pwm = engine_get_pulse_width_pm(RIGHT);
 	char buff[64];
 
 	//sprintf(buff, "Opto: %d\n", o);
 
-	sprintf(buff, "%f\t%d\n", v, pwm);
+	sprintf(buff, "%f\n", v);
 
 	serial_blue_write_string(buff);
 }

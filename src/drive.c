@@ -26,7 +26,7 @@
 #include "iodefine.h"
 
 #define FIXED_UPDATE_TIME_STEP_S 0.001f					// Fixed Update Time Interval
-#define VELOCITY_REGULATOR_V 500.0f					// Amplification of velocity regulator //TEST, ORIGINAL VALUE WAS 2000.0f
+#define VELOCITY_REGULATOR_V 500.0f						// Amplification of velocity regulator //TEST, ORIGINAL VALUE WAS 2000.0f
 #define VELOCITY_REGULATOR_TI_INVERSE 0.35f				// Ti inverse of velocity regulator
 #define VELOCITY_REGULATOR_TD 0.0f						// Td of velocity regulator
 #define VELOCITY_REGULATOR_WINDUP 1000//5

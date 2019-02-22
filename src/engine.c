@@ -26,7 +26,7 @@
 signed char g_engine_current_state;			// '1'=FORWARD, '-1'=BACKWARD, '0'=BREAK OR FREERUN
 
 /**
- * Initializes the engine module. Initial pulse width: 9211(1.5ms), initial mode: BREAK.
+ * Initializes the engine module. Initial pulse width: 9211(1.5ms), initial mode: FORWARD.
  * @note
  * 		Must be called first, otherwise the engine module won't work properly.
  */
@@ -34,42 +34,43 @@ void engine_initialize()
 {
 	SYSTEM.MSTPCRA.BIT.MSTPA7 = 0;				// Enable General-PWM-Timer module (GPT)
 
-			//GPT1 - Left Wheel
-			PORT7.DDR.BIT.B2 = 1;						// P72: PWM output (GTIOC1A)
-			PORT7.ICR.BIT.B2 = 0;						// Disable Input Buffer on P72
-			GPT.GTSTR.BIT.CST1 = 0;						// GPT1 stop counting (only during init)
-			GPT1.GTIOR.BIT.GTIOA = 9;					// Low output on Compare Match, High output at cycle end
-			GPT1.GTCR.BIT.MD = 4;						// Set Triangle-Wave PWM Mode 1
-			GPT1.GTCR.BIT.TPCS = 3;						// Clk/8 prescaler (6.14MHz)
-			GPT1.GTBER.BIT.CCRA = 0;					// No Buffer transfer at counter overflow
-			GPT1.GTUDC.BIT.UD = 1;						// Count up
-			GPT1.GTPR = 0xFFFF;							// Set max count value
-			GPT1.GTONCR.BIT.OAE = 1;					// Enable Output Pin GTIOC1A
-			GPT1.GTCNT = 0;								// initial count value = 0
-			GPT1.GTCCRA = ENGINE_SPEED_ZERO; 			// set initial compare value (Nullposition)
+	//GPT1 - Left Wheel
+	PORT7.DDR.BIT.B2 = 1;						// P72: PWM output (GTIOC1A)
+	PORT7.ICR.BIT.B2 = 0;						// Disable Input Buffer on P72
+	GPT.GTSTR.BIT.CST1 = 0;						// GPT1 stop counting (only during init)
+	GPT1.GTIOR.BIT.GTIOA = 9;					// Low output on Compare Match, High output at cycle end
+	GPT1.GTCR.BIT.MD = 4;						// Set Triangle-Wave PWM Mode 1
+	GPT1.GTCR.BIT.TPCS = 3;						// Clk/8 prescaler (6.14MHz)
+	GPT1.GTBER.BIT.CCRA = 0;					// No Buffer transfer at counter overflow
+	GPT1.GTUDC.BIT.UD = 1;						// Count up
+	GPT1.GTPR = 0xFFFF;							// Set max count value
+	GPT1.GTONCR.BIT.OAE = 1;					// Enable Output Pin GTIOC1A
+	GPT1.GTCNT = 0;								// initial count value = 0
+	GPT1.GTCCRA = ENGINE_SPEED_ZERO; 			// set initial compare value (Nullposition)
 
-			//GPT2 - Right Wheel
-			PORT7.DDR.BIT.B3 = 1;						// P73: PWM output (GTIOC2A)
-			PORT7.ICR.BIT.B3 = 0;						// Disable Input Buffer on P73
-			GPT.GTSTR.BIT.CST2 = 0;						// GPT2 stop counting (only during init)
-			GPT2.GTIOR.BIT.GTIOA = 9;					// Low output on Compare Match, High output at cycle end
-			GPT2.GTCR.BIT.MD = 4;						// Set Triangle-Wave PWM Mode 1
-			GPT2.GTCR.BIT.TPCS = 3;						// Clk/8 prescaler (6.14MHz)
-			GPT2.GTBER.BIT.CCRA = 0;					// No Buffer transfer at counter overflow
-			GPT2.GTUDC.BIT.UD = 1;						// Count up
-			GPT2.GTPR = 0xFFFF;							// Set max count value
-			GPT2.GTONCR.BIT.OAE = 1;					// Enable Output Pin GTIOC2A
-			GPT2.GTCNT = 0;								// initial count value = 0
-			GPT2.GTCCRA = ENGINE_SPEED_ZERO; 			// set initial compare value (Nullposition)
+	//GPT2 - Right Wheel
+	PORT7.DDR.BIT.B3 = 1;						// P73: PWM output (GTIOC2A)
+	PORT7.ICR.BIT.B3 = 0;						// Disable Input Buffer on P73
+	GPT.GTSTR.BIT.CST2 = 0;						// GPT2 stop counting (only during init)
+	GPT2.GTIOR.BIT.GTIOA = 9;					// Low output on Compare Match, High output at cycle end
+	GPT2.GTCR.BIT.MD = 4;						// Set Triangle-Wave PWM Mode 1
+	GPT2.GTCR.BIT.TPCS = 3;						// Clk/8 prescaler (6.14MHz)
+	GPT2.GTBER.BIT.CCRA = 0;					// No Buffer transfer at counter overflow
+	GPT2.GTUDC.BIT.UD = 1;						// Count up
+	GPT2.GTPR = 0xFFFF;							// Set max count value
+	GPT2.GTONCR.BIT.OAE = 1;					// Enable Output Pin GTIOC2A
+	GPT2.GTCNT = 0;								// initial count value = 0
+	GPT2.GTCCRA = ENGINE_SPEED_ZERO; 			// set initial compare value (Nullposition)
 
-			GPT.GTSTR.BIT.CST1 = 1;						// GPT1 start counting
-			GPT.GTSTR.BIT.CST2 = 1;						// GPT2 start counting
+	GPT.GTSTR.BIT.CST1 = 1;						// GPT1 start counting
+	GPT.GTSTR.BIT.CST2 = 1;						// GPT2 start counting
 
-			//Basically a Timer of 4 seconds to get the controller to start running.
-			for (int i=1; i<=200;i++){
-				while (!GPT1.GTST.BIT.TCFPO);
-				GPT1.GTST.BIT.TCFPO = 0;
-			}
+	g_engine_current_state = 1;					//initial mode
+	//Basically a Timer of 2 seconds to get the controller to start running.
+	for (int i=1; i<=200;i++){
+		while (!GPT1.GTST.BIT.TCFPO);
+		GPT1.GTST.BIT.TCFPO = 0;
+	}
 }
 
 /**

@@ -159,7 +159,7 @@ void opto_initialize(void) {
 	ICU.IER[0x12].BIT.IEN2 = 1;
 
 	//Start Counter
-	MTU.TSTRA.BIT.CST3 = 1;
+	//MTU.TSTRA.BIT.CST3 = 1;
 	//MTU.TSTRA.BIT.CST4=1;
 	MTU.TSTRB.BIT.CST6 = 1;
 	//MTU.TSTRB.BIT.CST7 = 1;
@@ -190,14 +190,14 @@ void Excep_MTU6_TGIB6(void)
 	wheel->cpt_index = RINGBUFFER_INDEX(OPTO_COUNTS_PER_TICK_BUFFER_SIZE, wheel->cpt_index + 1);
 
 	//Debug Opto tickcount
-	debug_ticks();
+	//debug_ticks();
 	//--------------------
 
 	// Handle Status Registers
 	MTU6.TSR.BIT.TGFB = 0;
 
-	if (MTU6.TSR.BIT.TGFB)
-		ICU.IR[143].BIT.IR = 1;
+	//if (MTU6.TSR.BIT.TGFB)
+		//ICU.IR[143].BIT.IR = 1;
 }
 
 /**
@@ -210,8 +210,8 @@ void Excep_MTU6_TCIV6(void)
 	// Handle Status Registers
 	MTU6.TSR.BIT.TCFV = 0;
 
-	if (MTU6.TSR.BIT.TCFV)
-		ICU.IR[146].BIT.IR = 1;
+	//if (MTU6.TSR.BIT.TCFV)
+		//ICU.IR[146].BIT.IR = 1;
 }
 
 

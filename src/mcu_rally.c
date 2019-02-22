@@ -133,7 +133,7 @@ void update_modules()
     // place your module update functions here
     tachometer_update ();
     hold_line_update ();
-    TED3_update();
+    //TED3_update();
     drive_curve_update ();
     controller_jump_update ();
     controller_square_update ();
@@ -150,6 +150,7 @@ void update_modules_fixed()
 {
     static int zehn_ms = 100;
     float distance = 0;
+    //static int time = 0;
 
 	// place your module fixed update functions here
 	//drive_curve_update_fixed();
@@ -160,23 +161,28 @@ void update_modules_fixed()
     zehn_ms--;
     if (zehn_ms <= 0){
     	zehn_ms = 100;
-    	debug_ticks();
+
     	distance = tachometer_get_distance_meter(BACK_RIGHT);
-    	if (distance >= 0 && distance < 0.1f){
+    	if (distance >= 0 && distance < 0.5f){
     		for (side = RIGHT; side <= LEFT; side++)
     		    {
     		    	engine_set_mode(side, FORWARD_FREERUN);
-    		    	new_pulse_width = 200;		//Hier den Wert für die Geschwindigkeit setzten, 0=Stillstand, 1000=max Speed
+    		    	new_pulse_width = 100;		//Hier den Wert für die Geschwindigkeit setzten, 0=Stillstand, 1000=max Speed
     		    	engine_set_pulse_width_pm(side,new_pulse_width);
+    		    	debug_ticks();
+
     		    }
+    		//time++;
     	}
-    	else{
+    	else {
+
     		for (side = RIGHT; side <= LEFT; side++)
-    		    		    {
-    		    		    	engine_set_mode(side, FORWARD_FREERUN);
-    		    		    	new_pulse_width = 0;		//Hier den Wert für die Geschwindigkeit setzten, 0=Stillstand, 1000=max Speed
-    		    		    	engine_set_pulse_width_pm(side,new_pulse_width);
-    		    		    }
+    		    {
+    		    	engine_set_mode(side, FORWARD_FREERUN);
+    		    	new_pulse_width = 0;		//Hier den Wert für die Geschwindigkeit setzten, 0=Stillstand, 1000=max Speed
+    		    	engine_set_pulse_width_pm(side,new_pulse_width);
+    		    	debug_ticks();
+    		    }
     	}
     }
 
