@@ -139,10 +139,10 @@ void update_modules()
     // place your module update functions here
     tachometer_update ();
 
-  //  sprintf(buff,"%c \n", ir_get_value(7));
-  //  serial_blue_write_string(buff);
+   //sprintf(buff,"%c \n", ir_get_value(7));
+   // serial_blue_write_string(buff);
     hold_line_update ();
-   // TED3_update();
+    TED3_update();
     //sprintf(buff, "UPDATE");
     //serial_blue_write_string(buff);
     drive_curve_update ();
