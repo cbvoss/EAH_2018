@@ -268,11 +268,12 @@ static int update_check = 0;
 		signed int brightness;
 		char shifts;
 		Ted_Picture_Update();
-		for (int i = 0; i <= 29; i++) {
-			sprintf(buff, "%d %d %d %d %d %d %d %d \n", g_picture_binary[0+po], g_picture_binary[1+po], g_picture_binary[2+po], g_picture_binary[3+po], g_picture_binary[4+po], g_picture_binary[4+po], g_picture_binary[5+po], g_picture_binary[6+po], g_picture_binary[7+po]);
+/*		for (int i = 0; i <= 29; i++) {
+			sprintf(buff, "|%d %d %d %d %d %d %d %d |\n", g_picture_binary[0+po], g_picture_binary[1+po], g_picture_binary[2+po], g_picture_binary[3+po], g_picture_binary[4+po], g_picture_binary[4+po], g_picture_binary[5+po], g_picture_binary[6+po], g_picture_binary[7+po]);
 			serial_blue_write_string(buff);
 			po+=8;
 		}
+*/
 		sprintf(buff,"----------------------------------------- \n");
 		serial_blue_write_string(buff);
 		if (update_check >= ROW_COUNT-1) {
