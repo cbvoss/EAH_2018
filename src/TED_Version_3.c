@@ -5,7 +5,7 @@
  *      Author: Maximilian Peuckert
  *      		Stefan Schmolke
  *
- *  Reviewed by:
+ *
  */
 
 //includes
@@ -27,14 +27,14 @@
  *  need to be changed according to tests
  */
 
-#define DOUBLELINE_BRIGHT 1
-#define DOUBLELINE_SHIFTS 1
-#define RIGHTLINE_BRIGHT 1
-#define RIGHTLINE_SHIFTS 1
-#define LEFTLINE_BRIGHT 1
-#define LEFTLINE_SHIFTS 1
-#define NORM_BRIGHT 1
-#define NORM_SHIFTS 1
+#define DOUBLELINE_BRIGHT 0
+#define DOUBLELINE_SHIFTS 15
+#define RIGHTLINE_BRIGHT 120
+#define RIGHTLINE_SHIFTS 15
+#define LEFTLINE_BRIGHT -120
+#define LEFTLINE_SHIFTS 15
+#define NORM_BRIGHT 0
+#define NORM_SHIFTS 10
 
 #define LINETYPESIZE 4
 
@@ -88,7 +88,7 @@ void Ted_Picture_Create(char pattern){
 	Ted_Increment_Ringbuffer();
 }
 /*
- * Increment the ringbuffer and rest them if position > 240 to 0
+ * Increment the ringbuffer and reset them if position > 240 to 0
  */
 
 int Ted_Increment_Ringbuffer(){
@@ -160,28 +160,6 @@ char Ted_Line_Shift(){
 			line_shift++;
 	}
 	return line_shift;
-
-
-	/*
-	char line_shift = 0;
-	char line_new[BOARD_LENGTH];
-	char line_old[BOARD_LENGTH];
-	int n = 0;
-	int buffer[BOARD_LENGTH];
-
-	do{
-		for(int i = 0; i < BOARD_LENGTH - 1; i++){
-			line_old[i] = g_picture_binary[n * BOARD_LENGTH + i];
-			line_new[i] = g_picture_binary[(n + 1) * BOARD_LENGTH + i];
-			for(int j = 0; j < BOARD_LENGTH - 1; j++){
-				buffer[i] = line_old[i] ^ line_new[i];
-				if(Ted_Popcount(buffer[i]))
-					line_shift++;
-			}
-		}
-	}while(n < 30);
-	return line_shift;
-	*/
 }
 
 /*
@@ -190,9 +168,8 @@ char Ted_Line_Shift(){
 
 void ted_send(signed int brightness, char shifts) {
 	char buffer[65];
-	sprintf(buffer, "brightness %d shifts %d \n", brightness, shifts);
+	sprintf(buffer, "%d ,%d \n", brightness, shifts);
 	serial_blue_write_string(buffer);
-
 }
 
 /*
@@ -201,21 +178,24 @@ void ted_send(signed int brightness, char shifts) {
  */
 
 char euclid(char brightness, char shifts) {
-	int min;		//minimal Distance
+	float min;		//minimal Distance
 	int minCount;	//Current Event which is the minimal
 	float distance[4];
-
+	char buff[64];
 	/*
 	 * Calculate the euclidic Distances to determine which Line should be detected
 	 * sqrt((y2-y1)²+(x2-x1)²)
 	 */
-	distance[0] = sqrt((pow(DOUBLELINE_BRIGHT-brightness, 2)+pow(DOUBLELINE_SHIFTS-shifts, 2)));
-	distance[1] = sqrt((pow(NORM_BRIGHT-brightness, 2)+pow(NORM_SHIFTS-shifts, 2)));
-	distance[2] = sqrt((pow(RIGHTLINE_BRIGHT-brightness, 2)+pow(RIGHTLINE_SHIFTS-shifts, 2)));
-	distance[3] = sqrt((pow(LEFTLINE_BRIGHT-brightness, 2)+pow(LEFTLINE_SHIFTS-shifts, 2)));
+	distance[0] = sqrt((pow(NORM_BRIGHT-brightness, 2)+pow(NORM_SHIFTS-shifts, 2)));
+	distance[1] = sqrt((pow(DOUBLELINE_BRIGHT-brightness, 2)+pow(DOUBLELINE_SHIFTS-shifts, 2)));
+	distance[2] = sqrt((pow(LEFTLINE_BRIGHT-brightness, 2)+pow(LEFTLINE_SHIFTS-shifts, 2)));
+	distance[3] = sqrt((pow(RIGHTLINE_BRIGHT-brightness, 2)+pow(RIGHTLINE_SHIFTS-shifts, 2)));
+	sprintf(buff, "NORM: %f, DOUBLE: %f, LEFT: %f, RIGHT: %f \n", distance[0], distance[1], distance[2], distance[3]);
+	serial_blue_write_string(buff);
 
-	min = distance[0];
+
 	minCount = 0;
+	min = distance[0];
 	for (int i = 1; i <= LINETYPESIZE -1; i++) {
 		if (distance[i] < min) {
 			min = distance[i];
@@ -226,21 +206,22 @@ char euclid(char brightness, char shifts) {
 }
 
 /*
- * Sets the detected Track event SLOW, NONE, JUMP_RIGHT, JUMP_LEFT
+ * Sets the detected Track event SQAURE, NONE, JUMP_RIGHT, JUMP_LEFT
  */
 
 void TED3_set_detected_track_event(int Type) {
 	switch(Type) {
-	case 0: g_current_event_TED3 = SQUARE;
-			serial_blue_write_string("square \n");
+	case 0: g_current_event_TED3 = NONE;
+			serial_blue_write_string("none \n");
 			break;
-	case 1: g_current_event_TED3 = NONE;
+	case 1: g_current_event_TED3 = SQUARE;
+			serial_blue_write_string("SQUARE \n");
 			break;
-	case 2: g_current_event_TED3 = JUMP_RIGHT;
-			serial_blue_write_string("right \n");
-			break;
-	case 3: g_current_event_TED3 = JUMP_LEFT;
+	case 2: g_current_event_TED3 = JUMP_LEFT;
 			serial_blue_write_string("left \n");
+			break;
+	case 3: g_current_event_TED3 = JUMP_RIGHT;
+			serial_blue_write_string("right \n");
 			break;
 	default: g_current_event_TED3 = NONE;
 	}
@@ -252,7 +233,7 @@ void TED3_set_detected_track_event(int Type) {
 
 enum track_event TED3_get_track_event() {
 
-	return g_current_event_TED3;
+	return NONE;
 }
 /*
  * gets called from the main function to update the track event
@@ -274,8 +255,8 @@ static int update_check = 0;
 			po+=8;
 		}
 */
-		sprintf(buff,"----------------------------------------- \n");
-		serial_blue_write_string(buff);
+	//	sprintf(buff,"----------------------------------------- \n");
+	//	serial_blue_write_string(buff);
 		if (update_check >= ROW_COUNT-1) {
 			brightness = Ted_Brightness_Calculation();
 			shifts = Ted_Line_Shift();
