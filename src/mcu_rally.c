@@ -159,9 +159,43 @@ void update_modules()
  */
 void update_modules_fixed()
 {
-    // place your module fixed update functions here
-	drive_curve_update_fixed();
-    drive_fixed_update ();
+    static int zehn_ms = 100;
+    float distance = 0;
+    //static int time = 0;
+
+	// place your module fixed update functions here
+	//drive_curve_update_fixed();
+    //drive_fixed_update ();
+    //Für Test der PWM
+	enum Side side;
+	float new_pulse_width;
+    zehn_ms--;
+    if (zehn_ms <= 0){
+    	zehn_ms = 100;
+
+    	distance = tachometer_get_distance_meter(BACK_RIGHT);
+    	if (distance >= 0 && distance < 0.5f){
+    		for (side = RIGHT; side <= LEFT; side++)
+    		    {
+    		    	engine_set_mode(side, FORWARD_FREERUN);
+    		    	new_pulse_width = 100;		//Hier den Wert für die Geschwindigkeit setzten, 0=Stillstand, 1000=max Speed
+    		    	engine_set_pulse_width_pm(side,new_pulse_width);
+    		    	debug_ticks();
+
+    		    }
+    		//time++;
+    	}
+    	else {
+
+    		for (side = RIGHT; side <= LEFT; side++)
+    		    {
+    		    	engine_set_mode(side, FORWARD_FREERUN);
+    		    	new_pulse_width = 0;		//Hier den Wert für die Geschwindigkeit setzten, 0=Stillstand, 1000=max Speed
+    		    	engine_set_pulse_width_pm(side,new_pulse_width);
+    		    	debug_ticks();
+    		    }
+    	}
+    }
 
 }
 
@@ -357,7 +391,7 @@ void mcu_rally_main()
 		
         static float targetVelocity_mps = DRIVE_SPEED_MPS;
 
-        current_track_event = TED3_get_track_event();
+        current_track_event = NONE; //ted_get_track_event (); -> NONE ist für den Test der PWM
 
 #ifdef ENABLE_CONTROLLER_STATE_MACHINE
         switch (current_track_event)
@@ -402,13 +436,13 @@ void mcu_rally_main()
                 }
             break;
             case NONE:
-                debugEventMapState ();
+                //debugEventMapState ();
 
 #if defined(USE_FUZZY_TARGET_SPEED)
                 targetVelocity_mps = fuzzy_calculate_target_velocity_mps(ir_get_pattern(), servo_get_position_angle_deg(), targetVelocity_mps);
 #endif
-                drive_curve_set_max_speed (targetVelocity_mps);
-                drive_curve_set_active (1);
+                //drive_curve_set_max_speed (targetVelocity_mps);
+                //drive_curve_set_active (1);
             break;
         }
 #endif
@@ -439,6 +473,7 @@ void mcu_rally_main()
         {
         	global_clock_reset_timer (&g_ms_tick);
         	update_modules_fixed ();
+
         }
     }
 }
