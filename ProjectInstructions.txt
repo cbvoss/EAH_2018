@@ -1,8 +1,5 @@
 In e2 Studio:
 
-clone Project from github as MCURally
-close gitkraken
-cut out that directory into another folder
 
 -create a new C Project
 -Project Name: MCURally
@@ -24,6 +21,5 @@ click finish
 
 -delete generated MCURally.c <-- thats the main.c file that would be conflicting
 
-replace the project folder with the downloaded project
-
+clone Project from gitlab into project directory
 -build the project
