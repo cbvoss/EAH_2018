@@ -12,6 +12,7 @@
 #include "serial_com.h"
 #include "engine.h"
 #include "servo.h"
+#include "TED_Version_3.h"
 #include "ted.h"
 #include "controller_hold_line.h"
 #include "adc.h"
@@ -31,6 +32,9 @@
 #include "opto_interruptor.h"
 #include "spi.h"
 #include "TEDnew.h"
+#include <stdio.h>
+
+
 
 #ifdef DEBUG
 #include "data_log.h"
@@ -102,6 +106,7 @@ void initialize_fixed_update()
  */
 void initialize_modules()
 {
+	char buff[64];
     // place your module initialization functions here
     ir_initialize ();
     serial_com_initialize ();
@@ -110,7 +115,9 @@ void initialize_modules()
     servo_initialize ();
     servo_set_borders (SERVO_LEFT, SERVO_CENTER, SERVO_RIGHT);
     drive_initialize ();
-    ted_initialize ();
+    Ted_Version_3_Initialize();
+  //  sprintf(buff, "INIT");
+  //  serial_blue_write_string(buff);
     serial_blue_initialize ();
     tachometer_initialize ();
     adc_initialize ();
@@ -128,10 +135,16 @@ void initialize_modules()
  */
 void update_modules()
 {
+	char buff[64];
     // place your module update functions here
     tachometer_update ();
+
+   //sprintf(buff,"%c \n", ir_get_value(7));
+   // serial_blue_write_string(buff);
     hold_line_update ();
-    ted_update ();
+    TED3_update();
+    //sprintf(buff, "UPDATE");
+    //serial_blue_write_string(buff);
     drive_curve_update ();
     controller_jump_update ();
     controller_square_update ();
@@ -341,10 +354,10 @@ void mcu_rally_main()
 
         static enum track_event last_track_event = NONE;
         enum track_event current_track_event = NONE;
-        
+		
         static float targetVelocity_mps = DRIVE_SPEED_MPS;
 
-        current_track_event = ted_get_track_event ();
+        current_track_event = TED3_get_track_event();
 
 #ifdef ENABLE_CONTROLLER_STATE_MACHINE
         switch (current_track_event)
@@ -356,7 +369,7 @@ void mcu_rally_main()
 				if (controller_square_has_finished ())
 				{
 					controller_square_set_active (0);
-					ted_reset_track_event ();
+					TED3_reset_track_event ();
 					//controller_square_reset ();
 					hold_line_set_active (0);
 					drive_curve_set_active (0);
@@ -369,7 +382,7 @@ void mcu_rally_main()
                 controller_jump_set_active (1);
                 if (controller_jump_has_finished ())
                 {
-                    ted_reset_track_event ();
+                    TED3_reset_track_event ();
                     hold_line_set_active (0);
                     controller_jump_reset ();
                     drive_curve_set_active (0);
@@ -418,7 +431,9 @@ void mcu_rally_main()
 
         // Update Modules
         update_modules ();
-
+        char buff[64];
+        	//sprintf(buff, "UPDATEMODULE");
+        	//serial_blue_write_string(buff);
         // fixed
         if (global_clock_timer (&g_ms_tick))
         {

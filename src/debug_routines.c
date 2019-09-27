@@ -95,8 +95,8 @@ void debug_ticks()
 
 		//sprintf(buff, "Opto: %d\n", o);
 
-		sprintf(buff, "Opto: %f\n", o);
+		//sprintf(buff, "Opto: %f\n", o);
 
-		serial_blue_write_string(buff);
+		//serial_blue_write_string(buff);
 	}
 }

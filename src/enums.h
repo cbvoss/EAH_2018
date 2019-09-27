@@ -43,7 +43,8 @@ enum wheel_selector{FRONT_LEFT,
 enum track_event{NONE,
 				 JUMP_LEFT,
 				 JUMP_RIGHT,
-				 SQUARE
+				 SQUARE,
+				 SLOW
 				 };
 
 #endif /* ENUMS_H_ */

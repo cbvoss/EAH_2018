@@ -42,7 +42,7 @@ char ir_get_value(char elementIndex){
 	mask = 1 << elementIndex;
 	result = ir_get_pattern();
 	result &= mask;
-	result = result == 0 ? 0:1;
+	result = result == 0 ? 0:1; //wie if else
 
 	return result;
 }
